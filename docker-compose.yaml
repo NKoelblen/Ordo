@@ -3,7 +3,7 @@ services:
     php:
         build:
             context: .
-        container_name: erp_php
+        container_name: ordo_php
         volumes:
             - .:/srv/app
         ports:
@@ -12,22 +12,22 @@ services:
             - APP_ENV=dev
         depends_on:
             - database
-        networks:
-            - symfony
+        # networks:
+        #     - ordo
     ###> doctrine/doctrine-bundle ###
     database:
         image: mysql:8.0
-        container_name: erp_mysql
+        container_name: ordo_mysql
         restart: always
         environment:
             MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: erp
+            MYSQL_DATABASE: ordo
             MYSQL_USER: admin
             MYSQL_PASSWORD: root
         ports:
             - '3306:3306'
-        networks:
-            - symfony
+        # networks:
+        #     - ordo
 ###< doctrine/doctrine-bundle ###
 
 volumes:
@@ -35,6 +35,6 @@ volumes:
     database_data:
 ###< doctrine/doctrine-bundle ###
 
-networks:
-    symfony:
-        driver: bridge
+# networks:
+#     ordo:
+#         driver: bridge
