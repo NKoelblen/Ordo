@@ -1,0 +1,40 @@
+services:
+    ###> symfony/php ###
+    php:
+        build:
+            context: .
+        container_name: erp_php
+        volumes:
+            - .:/srv/app
+        ports:
+            - '80:80'
+        environment:
+            - APP_ENV=dev
+        depends_on:
+            - database
+        networks:
+            - symfony
+    ###> doctrine/doctrine-bundle ###
+    database:
+        image: mysql:8.0
+        container_name: erp_mysql
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: erp
+            MYSQL_USER: admin
+            MYSQL_PASSWORD: root
+        ports:
+            - '3306:3306'
+        networks:
+            - symfony
+###< doctrine/doctrine-bundle ###
+
+volumes:
+    ###> doctrine/doctrine-bundle ###
+    database_data:
+###< doctrine/doctrine-bundle ###
+
+networks:
+    symfony:
+        driver: bridge
