@@ -33,17 +33,31 @@ class Transaction
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
+    private ?\DateTimeInterface $operationDate = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $emissionDate = null;
 
     /**
-     * @var Collection<int, Category>
+     * @var Collection<int, Space>
      */
-    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'transactions')]
-    private Collection $category;
+    #[ORM\ManyToMany(targetEntity: Space::class, inversedBy: 'transactions')]
+    private Collection $spaces;
+
+    #[ORM\ManyToOne(inversedBy: 'transactions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Counterparty $counterparty = null;
+
+    /**
+     * @var Collection<int, TransactionDetail>
+     */
+    #[ORM\OneToMany(targetEntity: TransactionDetail::class, mappedBy: 'transaction')]
+    private Collection $transactionDetails;
 
     public function __construct()
     {
-        $this->category = new ArrayCollection();
+        $this->spaces = new ArrayCollection();
+        $this->transactionDetails = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -111,38 +125,92 @@ class Transaction
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getOperationDate(): ?\DateTimeInterface
     {
-        return $this->date;
+        return $this->operationDate;
     }
 
-    public function setDate(\DateTimeInterface $date): static
+    public function setOperationDate(\DateTimeInterface $operationDate): static
     {
-        $this->date = $date;
+        $this->operationDate = $operationDate;
+
+        return $this;
+    }
+
+    public function getEmissionDate(): ?\DateTimeInterface
+    {
+        return $this->emissionDate;
+    }
+
+    public function setEmissionDate(\DateTimeInterface $emissionDate): static
+    {
+        $this->emissionDate = $emissionDate;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Category>
+     * @return Collection<int, Space>
      */
-    public function getCategory(): Collection
+    public function getSpaces(): Collection
     {
-        return $this->category;
+        return $this->spaces;
     }
 
-    public function addCategory(Category $category): static
+    public function addSpace(Space $space): static
     {
-        if (!$this->category->contains($category)) {
-            $this->category->add($category);
+        if (!$this->spaces->contains($space)) {
+            $this->spaces->add($space);
         }
 
         return $this;
     }
 
-    public function removeCategory(Category $category): static
+    public function removeSpace(Space $space): static
     {
-        $this->category->removeElement($category);
+        $this->spaces->removeElement($space);
+
+        return $this;
+    }
+
+    public function getCounterparty(): ?Counterparty
+    {
+        return $this->counterparty;
+    }
+
+    public function setCounterparty(?Counterparty $counterparty): static
+    {
+        $this->counterparty = $counterparty;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TransactionDetail>
+     */
+    public function getTransactionDetails(): Collection
+    {
+        return $this->transactionDetails;
+    }
+
+    public function addTransactionDetail(TransactionDetail $transactionDetail): static
+    {
+        if (!$this->transactionDetails->contains($transactionDetail)) {
+            $this->transactionDetails->add($transactionDetail);
+            $transactionDetail->setTransaction($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransactionDetail(TransactionDetail $transactionDetail): static
+    {
+        if ($this->transactionDetails->removeElement($transactionDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($transactionDetail->getTransaction() === $this) {
+                $transactionDetail->setTransaction(null);
+            }
+        }
 
         return $this;
     }

@@ -18,9 +18,6 @@ class Category
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $type = null;
-
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
     private ?self $parent = null;
 
@@ -37,16 +34,23 @@ class Category
     private Collection $budgets;
 
     /**
-     * @var Collection<int, Transaction>
+     * @var Collection<int, Space>
      */
-    #[ORM\ManyToMany(targetEntity: Transaction::class, mappedBy: 'category')]
-    private Collection $transactions;
+    #[ORM\ManyToMany(targetEntity: Space::class, inversedBy: 'categories')]
+    private Collection $spaces;
+
+    /**
+     * @var Collection<int, TransactionDetail>
+     */
+    #[ORM\OneToMany(targetEntity: TransactionDetail::class, mappedBy: 'category')]
+    private Collection $transactionDetails;
 
     public function __construct()
     {
         $this->children = new ArrayCollection();
         $this->budgets = new ArrayCollection();
-        $this->transactions = new ArrayCollection();
+        $this->spaces = new ArrayCollection();
+        $this->transactionDetails = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -62,18 +66,6 @@ class Category
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): static
-    {
-        $this->type = $type;
 
         return $this;
     }
@@ -151,27 +143,54 @@ class Category
     }
 
     /**
-     * @return Collection<int, Transaction>
+     * @return Collection<int, Space>
      */
-    public function getTransactions(): Collection
+    public function getSpaces(): Collection
     {
-        return $this->transactions;
+        return $this->spaces;
     }
 
-    public function addTransaction(Transaction $transaction): static
+    public function addSpace(Space $space): static
     {
-        if (!$this->transactions->contains($transaction)) {
-            $this->transactions->add($transaction);
-            $transaction->addCategory($this);
+        if (!$this->spaces->contains($space)) {
+            $this->spaces->add($space);
         }
 
         return $this;
     }
 
-    public function removeTransaction(Transaction $transaction): static
+    public function removeSpace(Space $space): static
     {
-        if ($this->transactions->removeElement($transaction)) {
-            $transaction->removeCategory($this);
+        $this->spaces->removeElement($space);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TransactionDetail>
+     */
+    public function getTransactionDetails(): Collection
+    {
+        return $this->transactionDetails;
+    }
+
+    public function addTransactionDetail(TransactionDetail $transactionDetail): static
+    {
+        if (!$this->transactionDetails->contains($transactionDetail)) {
+            $this->transactionDetails->add($transactionDetail);
+            $transactionDetail->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransactionDetail(TransactionDetail $transactionDetail): static
+    {
+        if ($this->transactionDetails->removeElement($transactionDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($transactionDetail->getCategory() === $this) {
+                $transactionDetail->setCategory(null);
+            }
         }
 
         return $this;

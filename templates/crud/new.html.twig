@@ -1,0 +1,6 @@
+{% extends 'crud/layout.html.twig' %} {% block title %} New {{ entityClass | class_name }}{% endblock %} {% block content %}
+
+{{ include('crud/_form.html.twig', { form: form }) }}
+
+<a href="{{ path('app_entity_index', { class: entityClass | class_name | lower }) }}">Back to liste</a>
+{% endblock %}

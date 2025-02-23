@@ -1,0 +1,23 @@
+{% extends 'crud/layout.html.twig' %} {% block title %}{{ item | class_name }}{% endblock %} {% block content %}
+
+<table>
+	<tbody>
+		{% for property, value in item|to_array %}
+		<tr>
+			<th>{{ property | title }}</th>
+			<td>
+				{{ dump(value) }}
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<a href="{{ path('app_entity_edit', { class: item | class_name | lower, id: item.id }) }}">Edit</a>
+<a
+	href="{{ path('app_entity_delete', { class: item | class_name | lower, id: item.id }) }}"
+	onclick="return confirm('Do you really want to delete this item?');"
+	>Delete</a
+>
+<a href="{{ path('app_entity_index', { class: item | class_name | lower }) }}">Back to list</a>
+{% endblock %}

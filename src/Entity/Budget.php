@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BudgetRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -21,11 +23,26 @@ class Budget
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $amount = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $periodStart = null;
+    /**
+     * @var Collection<int, Space>
+     */
+    #[ORM\ManyToMany(targetEntity: Space::class, inversedBy: 'budgets')]
+    private Collection $spaces;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $periodEnd = null;
+    #[ORM\Column]
+    private ?int $month = null;
+
+    #[ORM\Column]
+    private ?int $year = null;
+
+    #[ORM\ManyToOne(inversedBy: 'budgets')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Member $groupMember = null;
+
+    public function __construct()
+    {
+        $this->spaces = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -56,26 +73,62 @@ class Budget
         return $this;
     }
 
-    public function getPeriodStart(): ?\DateTimeInterface
+    /**
+     * @return Collection<int, Space>
+     */
+    public function getSpaces(): Collection
     {
-        return $this->periodStart;
+        return $this->spaces;
     }
 
-    public function setPeriodStart(\DateTimeInterface $periodStart): static
+    public function addSpace(Space $space): static
     {
-        $this->periodStart = $periodStart;
+        if (!$this->spaces->contains($space)) {
+            $this->spaces->add($space);
+        }
 
         return $this;
     }
 
-    public function getPeriodEnd(): ?\DateTimeInterface
+    public function removeSpace(Space $space): static
     {
-        return $this->periodEnd;
+        $this->spaces->removeElement($space);
+
+        return $this;
     }
 
-    public function setPeriodEnd(\DateTimeInterface $periodEnd): static
+    public function getMonth(): ?int
     {
-        $this->periodEnd = $periodEnd;
+        return $this->month;
+    }
+
+    public function setMonth(int $month): static
+    {
+        $this->month = $month;
+
+        return $this;
+    }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(int $year): static
+    {
+        $this->year = $year;
+
+        return $this;
+    }
+
+    public function getGroupMember(): ?Member
+    {
+        return $this->groupMember;
+    }
+
+    public function setGroupMember(?Member $groupMember): static
+    {
+        $this->groupMember = $groupMember;
 
         return $this;
     }
