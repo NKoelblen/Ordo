@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\FieldService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -14,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class EntityController extends AbstractController
 {
     #[Route('/{class}', name: 'app_entity_index', methods: ['GET'])]
-    public function index(string $class, EntityManagerInterface $entityManager): Response
+    public function index(string $class, EntityManagerInterface $entityManager, FieldService $fieldService): Response
     {
         $entityClass = "App\\Entity\\" . ucfirst($class);
         if (!class_exists($entityClass)) {
@@ -22,11 +23,13 @@ final class EntityController extends AbstractController
         }
 
         $items = $entityManager->getRepository($entityClass)->findAll();
+        $fields = $fieldService->getFields(ucfirst($class));
 
         return $this->render(
             'crud/index.html.twig',
             [
                 'items' => $items,
+                'fields' => $fields,
                 'entity' => $entityClass
             ]
         );

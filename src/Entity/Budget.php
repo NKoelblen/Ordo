@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Attribute\Displayable;
 use App\Repository\BudgetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,22 +22,27 @@ class Budget
     private ?Category $category = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[Displayable]
     private ?string $amount = null;
 
     /**
      * @var Collection<int, Space>
      */
     #[ORM\ManyToMany(targetEntity: Space::class, inversedBy: 'budgets')]
+    #[Displayable]
     private Collection $spaces;
 
     #[ORM\Column]
+    #[Displayable]
     private ?int $month = null;
 
     #[ORM\Column]
+    #[Displayable]
     private ?int $year = null;
 
     #[ORM\ManyToOne(inversedBy: 'budgets')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Displayable]
     private ?Member $groupMember = null;
 
     public function __construct()

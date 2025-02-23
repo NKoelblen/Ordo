@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Attribute\Displayable;
 use App\Repository\MemberRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,12 +18,14 @@ class Member
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Displayable]
     private ?string $name = null;
 
     /**
      * @var Collection<int, Space>
      */
     #[ORM\ManyToMany(targetEntity: Space::class, inversedBy: 'members')]
+    #[Displayable]
     private Collection $spaces;
 
     /**

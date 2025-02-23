@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Attribute\Displayable;
 use App\Repository\TransactionDetailRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,6 +17,7 @@ class TransactionDetail
 
     #[ORM\ManyToOne(inversedBy: 'transactionDetails')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Displayable]
     private ?Transaction $transaction = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
@@ -23,16 +25,20 @@ class TransactionDetail
 
     #[ORM\ManyToOne(inversedBy: 'transactionDetails')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Displayable]
     private ?Category $category = null;
 
     #[ORM\ManyToOne(inversedBy: 'transactionDetails')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Displayable]
     private ?Member $groupMember = null;
 
     #[ORM\Column]
+    #[Displayable]
     private ?int $month = null;
 
     #[ORM\Column]
+    #[Displayable]
     private ?int $year = null;
 
     public function getId(): ?int

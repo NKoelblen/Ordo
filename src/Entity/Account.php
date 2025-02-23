@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Attribute\Displayable;
 use App\Repository\AccountRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,9 +18,11 @@ class Account
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Displayable]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Displayable]
     private ?string $balance = null;
 
     /**
@@ -32,6 +35,7 @@ class Account
      * @var Collection<int, Space>
      */
     #[ORM\ManyToMany(targetEntity: Space::class, inversedBy: 'accounts')]
+    #[Displayable]
     private Collection $spaces;
 
     public function __construct()

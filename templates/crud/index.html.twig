@@ -8,8 +8,8 @@
 <table class="table">
 	<thead>
 		<tr>
-			{% for property in items[0]|to_array|keys %}
-			<th>{{ property | title }}</th>
+			{% for field in fields %}
+			<th>{{ field | capitalize }}</th>
 			{% endfor %}
 			<th>Actions</th>
 		</tr>
@@ -17,9 +17,9 @@
 	<tbody>
 		{% for item in items %}
 		<tr>
-			{% for property, value in item|to_array %}
+			{% for field in fields %}
 			<td>
-				{{ dump(value) }}
+				{{ dump(attribute(item, field)) }}
 			</td>
 			{% endfor %}
 			<td>

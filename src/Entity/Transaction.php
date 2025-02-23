@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Attribute\Displayable;
 use App\Repository\TransactionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,34 +19,43 @@ class Transaction
 
     #[ORM\ManyToOne(inversedBy: 'transactions')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Displayable]
     private ?Account $account = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Displayable]
     private ?string $debit = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[Displayable]
     private ?string $credit = null;
 
     #[ORM\Column(length: 255)]
+    #[Displayable]
     private ?string $type = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Displayable]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Displayable]
     private ?\DateTimeInterface $operationDate = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Displayable]
     private ?\DateTimeInterface $emissionDate = null;
 
     /**
      * @var Collection<int, Space>
      */
     #[ORM\ManyToMany(targetEntity: Space::class, inversedBy: 'transactions')]
+    #[Displayable]
     private Collection $spaces;
 
     #[ORM\ManyToOne(inversedBy: 'transactions')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Displayable]
     private ?Counterparty $counterparty = null;
 
     /**

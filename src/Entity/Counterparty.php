@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Attribute\Displayable;
 use App\Repository\CounterpartyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,12 +17,14 @@ class Counterparty
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Displayable]
     private ?string $name = null;
 
     /**
      * @var Collection<int, Space>
      */
     #[ORM\ManyToMany(targetEntity: Space::class, inversedBy: 'counterparties')]
+    #[Displayable]
     private Collection $spaces;
 
     /**
