@@ -2,11 +2,11 @@
 
 <table>
 	<tbody>
-		{% for property, value in item|to_array %}
+		{% for field in fields %}
 		<tr>
-			<th>{{ property | title }}</th>
+			<th>{{ field | capitalize }}</th>
 			<td>
-				{{ dump(value) }}
+				{{ dump(attribute(item, field)) }}
 			</td>
 		</tr>
 		{% endfor %}

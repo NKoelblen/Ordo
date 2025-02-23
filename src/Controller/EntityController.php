@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Service\FieldService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,7 +65,7 @@ final class EntityController extends AbstractController
     }
 
     #[Route('/{class}/{id}', name: 'app_entity_show', methods: ['GET'])]
-    public function show(string $class, int $id, EntityManagerInterface $entityManager): Response
+    public function show(string $class, int $id, EntityManagerInterface $entityManager, FieldService $fieldService): Response
     {
         $entityClass = "App\\Entity\\" . ucfirst($class);
         if (!class_exists($entityClass)) {
@@ -78,8 +77,11 @@ final class EntityController extends AbstractController
             throw $this->createNotFoundException("Aucun enregistrement trouvé.");
         }
 
+        $fields = $fieldService->getFields(ucfirst($class));
+
         return $this->render('crud/show.html.twig', [
             'item' => $item,
+            'fields' => $fields,
         ]);
     }
 
