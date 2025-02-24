@@ -1,38 +1,40 @@
-{% extends 'crud/layout.html.twig' %} {% block title %}{{ entity | class_name }}{% endblock %} {% block content %}
+{% extends 'crud/layout.html.twig' %}
 
-<a href="{{ path('app_entity_new', { class: entity | class_name | lower }) }}">New</a>
+{% block title %}
+	{{ entity|class_name }}
+{% endblock %}
 
-{% if items is empty %}
-<p>No items found.</p>
-{% else %}
-<table class="table">
-	<thead>
-		<tr>
-			{% for field in fields %}
-			<th>{{ field | capitalize }}</th>
-			{% endfor %}
-			<th>Actions</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for item in items %}
-		<tr>
-			{% for field in fields %}
-			<td>
-				{{ dump(attribute(item, field)) }}
-			</td>
-			{% endfor %}
-			<td>
-				<a href="{{ path('app_entity_show', { class: item | class_name | lower, id: item.id }) }}">Show</a>
-				<a href="{{ path('app_entity_edit', { class: item | class_name | lower, id: item.id }) }}">Edit</a>
-				<a
-					href="{{ path('app_entity_delete', { class: item | class_name | lower, id: item.id }) }}"
-					onclick="return confirm('Do you really want to delete this item?');"
-					>Delete</a
-				>
-			</td>
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
-{% endif %} {% endblock %}
+{% block content %}
+
+	<a href="{{ path('app_entity_new', { class: entity|class_name|lower }) }}">New</a>
+
+	{% if items is empty %}
+		<p>No items found.</p>
+	{% else %}
+
+		<table class="table">
+			<thead>
+				<tr>
+					{% for field in fields %}
+						<th>{{ field|capitalize }}</th>
+					{% endfor %}
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in items %}
+					<tr>
+						{% for field in fields %}
+							<td>{% include 'crud/_fields.html.twig' with {'item': item, 'field': field} %}</td>
+						{% endfor %}
+						<td>
+							<a href="{{ path('app_entity_show', { class: item|class_name|lower, id: item.id }) }}">Show</a>
+							<a href="{{ path('app_entity_edit', { class: item|class_name|lower, id: item.id }) }}">Edit</a>
+							<a href="{{ path('app_entity_delete', { class: item|class_name|lower, id: item.id }) }}" onclick="return confirm('Do you really want to delete this item?');">Delete</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+{% endblock %}

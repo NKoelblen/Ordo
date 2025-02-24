@@ -1,6 +1,6 @@
-{# Utilisation : {% include 'components/crud/_form.html.twig' with {'form': form, 'button_label': 'Enregistrer'} %} #}
+{# Utilisation : {% include 'crud/_form.html.twig' with {'form': form, 'button_label': 'Save'} %} #}
 
 {{ form_start(form) }}
 {{ form_widget(form) }}
-<button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

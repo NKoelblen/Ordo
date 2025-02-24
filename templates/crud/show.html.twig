@@ -1,23 +1,21 @@
-{% extends 'crud/layout.html.twig' %} {% block title %}{{ item | class_name }}{% endblock %} {% block content %}
+{% extends 'crud/layout.html.twig' %}
+{% block title %}
+	{{ item|class_name }}
+{% endblock %}
+{% block content %}
 
-<table>
-	<tbody>
-		{% for field in fields %}
-		<tr>
-			<th>{{ field | capitalize }}</th>
-			<td>
-				{{ dump(attribute(item, field)) }}
-			</td>
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
+	<table>
+		<tbody>
+			{% for field in fields %}
+				<tr>
+					<th scope="row">{{ field|capitalize }}</th>
+					<td>{% include 'crud/_fields.html.twig' with {'item': item, 'field': field} %}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 
-<a href="{{ path('app_entity_edit', { class: item | class_name | lower, id: item.id }) }}">Edit</a>
-<a
-	href="{{ path('app_entity_delete', { class: item | class_name | lower, id: item.id }) }}"
-	onclick="return confirm('Do you really want to delete this item?');"
-	>Delete</a
->
-<a href="{{ path('app_entity_index', { class: item | class_name | lower }) }}">Back to list</a>
+	<a href="{{ path('app_entity_edit', { class: item|class_name|lower, id: item.id }) }}">Edit</a>
+	<a href="{{ path('app_entity_delete', { class: item|class_name|lower, id: item.id }) }}" onclick="return confirm('Do you really want to delete this item?');">Delete</a>
+	<a href="{{ path('app_entity_index', { class: item|class_name|lower }) }}">Back to list</a>
 {% endblock %}

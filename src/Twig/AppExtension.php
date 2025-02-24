@@ -5,6 +5,7 @@ namespace App\Twig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use ReflectionClass;
+use Twig\TwigTest;
 
 class AppExtension extends AbstractExtension
 {
@@ -13,6 +14,13 @@ class AppExtension extends AbstractExtension
         return [
             new TwigFilter('to_array', [$this, 'toArray']),
             new TwigFilter('class_name', [$this, 'getClassName']),
+        ];
+    }
+
+    public function getTests(): array
+    {
+        return [
+            new TwigTest('object', 'is_object'),
         ];
     }
 

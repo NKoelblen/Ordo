@@ -1,0 +1,31 @@
+{# Utilisation : {% include 'crud/_fields.html.twig' with {'item': item, 'field': field} %} #}
+
+{% set value = attribute(item, field) %}
+
+{% if value is iterable %}
+	{% for item in value %}
+		{% if item is object %}
+			<a href="{{ path('app_entity_show', { class: item|class_name|lower, id: item.id }) }}">
+				{{ item.name }}
+			</a>
+		{% endif %}
+		{% if not loop.last %},
+		{% endif %}
+	{% endfor %}
+
+{% elseif value is object %}
+	<a href="{{ path('app_entity_show', { class: value|class_name|lower, id: value.id }) }}">
+		{{ value.name }}
+	</a>
+
+{% elseif value is same as(true) %}
+	✅
+{% elseif value is same as(false) %}
+	❌
+
+{% elseif value.timezone is defined %}
+	{{ value|date('d/m/Y') }}
+
+{% else %}
+	{{ value }}
+{% endif %}
