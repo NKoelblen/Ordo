@@ -20,9 +20,9 @@ class Space
     #[Displayable]
     private ?string $name = null;
 
-    #[ORM\Column]
+    #[ORM\Column(options: ['default' => false])]
     #[Displayable]
-    private ?bool $professional = null;
+    private ?bool $professional = false;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
     #[Displayable]

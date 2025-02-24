@@ -27,6 +27,7 @@ services:
     App\Twig\GlobalVariables:
         arguments:
             $entityService: '@App\Service\EntityService'
+            $spaceService: '@App\Service\SpaceService'
 
     App\Twig\AppExtension:
         tags: ['twig.extension']

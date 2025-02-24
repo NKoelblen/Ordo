@@ -29,6 +29,56 @@
 			</ul>
 		</nav>
 
+		<nav>
+			<ul>
+				{% macro render_space(space, spaces) %}
+					<li data-id="{{ space.id }}" data-parent="{{ space.parent ? space.parent.id : 'null' }}">
+						<details>
+							<summary>
+								{{ form_start(spaceForms['edit'][space.id]) }}
+								{{ form_widget(spaceForms['edit'][space.id]) }}
+								<button type="submit">Modifier</button>
+								{{ form_end(spaceForms['edit'][space.id]) }}
+								<a href="{{ path('app_entity_delete', { class: space|class_name|lower, id: space.id }) }}" onclick="return confirm('Do you really want to delete this item?');">-</a>
+							</summary>
+
+							{% set children = spaces|filter(s => s.parent and s.parent.id == space.id) %}
+
+							<ul>
+								{% for child in children %}
+									{{ _self.render_space(child, spaces) }}
+								{% endfor %}
+
+								<li>
+									<details>
+										<summary>+</summary>
+										{{ form_start(spaceForms['new'][space.id]) }}
+										{{ form_widget(spaceForms['new'][space.id]) }}
+										<button type="submit">Modifier</button>
+										{{ form_end(spaceForms['new'][space.id]) }}
+									</details>
+								</li>
+							</ul>
+						</details>
+					</li>
+				{% endmacro %}
+
+				{% import _self as macros %}
+				{% for space in spaces %}
+					{% if space.parent is null %}
+						{{ macros.render_space(space, spaces) }}
+					{% endif %}
+				{% endfor %}
+
+				<li>
+					{{ form_start(spaceForms['new']['-1']) }}
+					{{ form_widget(spaceForms['new']['-1']) }}
+					<button type="submit">+</button>
+					{{ form_end(spaceForms['new']['-1']) }}
+				</li>
+			</ul>
+		</nav>
+
 		<main>
 			<h1>{{ block('title') }}</h1>
 
