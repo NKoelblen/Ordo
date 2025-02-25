@@ -21,9 +21,8 @@ class EntityService
             'Category',
             'Counterparty',
             'Member',
-            'Space',
             'Transaction',
-            'TransactionDetail',
+            'Detail',
         ];
 
         return array_map(fn($entity) => [

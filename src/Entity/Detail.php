@@ -3,19 +3,19 @@
 namespace App\Entity;
 
 use App\Attribute\Displayable;
-use App\Repository\TransactionDetailRepository;
+use App\Repository\DetailRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: TransactionDetailRepository::class)]
-class TransactionDetail
+#[ORM\Entity(repositoryClass: DetailRepository::class)]
+class Detail
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'transactionDetails')]
+    #[ORM\ManyToOne(inversedBy: 'details')]
     #[ORM\JoinColumn(nullable: false)]
     #[Displayable]
     private ?Transaction $transaction = null;
@@ -23,12 +23,12 @@ class TransactionDetail
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $amount = null;
 
-    #[ORM\ManyToOne(inversedBy: 'transactionDetails')]
+    #[ORM\ManyToOne(inversedBy: 'details')]
     #[ORM\JoinColumn(nullable: false)]
     #[Displayable]
     private ?Category $category = null;
 
-    #[ORM\ManyToOne(inversedBy: 'transactionDetails')]
+    #[ORM\ManyToOne(inversedBy: 'details')]
     #[ORM\JoinColumn(nullable: false)]
     #[Displayable]
     private ?Member $groupMember = null;

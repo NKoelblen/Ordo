@@ -43,17 +43,17 @@ class Category
     private Collection $spaces;
 
     /**
-     * @var Collection<int, TransactionDetail>
+     * @var Collection<int, Detail>
      */
-    #[ORM\OneToMany(targetEntity: TransactionDetail::class, mappedBy: 'category')]
-    private Collection $transactionDetails;
+    #[ORM\OneToMany(targetEntity: Detail::class, mappedBy: 'category')]
+    private Collection $details;
 
     public function __construct()
     {
         $this->children = new ArrayCollection();
         $this->budgets = new ArrayCollection();
         $this->spaces = new ArrayCollection();
-        $this->transactionDetails = new ArrayCollection();
+        $this->details = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -170,29 +170,29 @@ class Category
     }
 
     /**
-     * @return Collection<int, TransactionDetail>
+     * @return Collection<int, Detail>
      */
-    public function getTransactionDetails(): Collection
+    public function getDetails(): Collection
     {
-        return $this->transactionDetails;
+        return $this->details;
     }
 
-    public function addTransactionDetail(TransactionDetail $transactionDetail): static
+    public function addDetail(Detail $detail): static
     {
-        if (!$this->transactionDetails->contains($transactionDetail)) {
-            $this->transactionDetails->add($transactionDetail);
-            $transactionDetail->setCategory($this);
+        if (!$this->details->contains($detail)) {
+            $this->details->add($detail);
+            $detail->setCategory($this);
         }
 
         return $this;
     }
 
-    public function removeTransactionDetail(TransactionDetail $transactionDetail): static
+    public function removeDetail(Detail $detail): static
     {
-        if ($this->transactionDetails->removeElement($transactionDetail)) {
+        if ($this->details->removeElement($detail)) {
             // set the owning side to null (unless already changed)
-            if ($transactionDetail->getCategory() === $this) {
-                $transactionDetail->setCategory(null);
+            if ($detail->getCategory() === $this) {
+                $detail->setCategory(null);
             }
         }
 

@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\TransactionDetail;
+use App\Entity\Detail;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<TransactionDetail>
+ * @extends ServiceEntityRepository<Detail>
  */
-class TransactionDetailRepository extends ServiceEntityRepository
+class DetailRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TransactionDetail::class);
+        parent::__construct($registry, Detail::class);
     }
 
-//    /**
-//     * @return TransactionDetail[] Returns an array of TransactionDetail objects
+    //    /**
+//     * @return Detail[] Returns an array of Detail objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -31,7 +31,7 @@ class TransactionDetailRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?TransactionDetail
+    //    public function findOneBySomeField($value): ?Detail
 //    {
 //        return $this->createQueryBuilder('t')
 //            ->andWhere('t.exampleField = :val')

@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Transaction;
-use App\Entity\TransactionDetail;
+use App\Entity\Detail;
 use App\Form\Field\CategoryFieldType;
 use App\Form\Field\CustomMoneyFieldType;
 use App\Form\Field\MemberFieldType;
@@ -13,7 +13,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TransactionDetailType extends AbstractType
+class DetailType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -32,7 +32,7 @@ class TransactionDetailType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => TransactionDetail::class,
+            'data_class' => Detail::class,
         ]);
     }
 }
