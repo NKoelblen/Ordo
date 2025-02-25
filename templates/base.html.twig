@@ -33,37 +33,44 @@
 			</ul>
 		</nav>
 
-		<nav>
-			<ul>
-				{% macro render_space(space, spaces) %}
-					<li data-id="{{ space.id }}" data-parent="{{ space.parent ? space.parent.id : 'null' }}">
-						<details>
-							<summary>
-								{{ form_start(spaceForms['edit'][space.id]) }}
-								{{ form_widget(spaceForms['edit'][space.id]) }}
-								<button type="submit">Modifier</button>
-								{{ form_end(spaceForms['edit'][space.id]) }}
-								<a href="{{ path('app_entity_delete', { class: space|class_name|lower, id: space.id }) }}" onclick="return confirm('Do you really want to delete this item?');">-</a>
-							</summary>
+		<div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
+			<a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+				<span class="fs-5 fw-semibold">Ordo</span>
+			</a>
 
+			<ul class="list-unstyled ps-0 btn-toggle-nav">
+
+				<li class="mb-1">
+					<a href="/" class="link-dark rounded">Home</a>
+				</li>
+
+				{% macro render_space(space, spaces) %}
+					<li class="mb-1">
+						<button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="{{ '#collapse-space-' ~ space.id }}" aria-expanded="false"></button>
+						<a href="{{ path('app_entity_show', { class: space|class_name|lower, id: space.id }) }}" class="link-dark rounded">{{ space.name }}</a>
+
+						{{ form_start(spaceForms['edit'][space.id]) }}
+						{{ form_widget(spaceForms['edit'][space.id]) }}
+						<button type="submit">Save</button>
+						{{ form_end(spaceForms['edit'][space.id]) }}
+						<a href="{{ path('app_entity_delete', { class: space|class_name|lower, id: space.id }) }}" onclick="return confirm('Do you really want to delete this item?');">-</a>
+
+						<div class="collapse" id="{{ 'collapse-space-' ~ space.id }}">
 							{% set children = spaces|filter(s => s.parent and s.parent.id == space.id) %}
 
-							<ul>
+							<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 								{% for child in children %}
 									{{ _self.render_space(child, spaces) }}
 								{% endfor %}
 
 								<li>
-									<details>
-										<summary>+</summary>
-										{{ form_start(spaceForms['new'][space.id]) }}
-										{{ form_widget(spaceForms['new'][space.id]) }}
-										<button type="submit">Modifier</button>
-										{{ form_end(spaceForms['new'][space.id]) }}
-									</details>
+									{{ form_start(spaceForms['new'][space.id]) }}
+									{{ form_widget(spaceForms['new'][space.id]) }}
+									<button type="submit">+</button>
+									{{ form_end(spaceForms['new'][space.id]) }}
 								</li>
 							</ul>
-						</details>
+						</div>
 					</li>
 				{% endmacro %}
 
@@ -81,7 +88,7 @@
 					{{ form_end(spaceForms['new']['-1']) }}
 				</li>
 			</ul>
-		</nav>
+		</div>
 
 		<main>
 			<h1>{{ block('title') }}</h1>
