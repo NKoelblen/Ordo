@@ -52,6 +52,12 @@ final class EntityController extends AbstractController
             $entityManager->persist($item);
             $entityManager->flush();
 
+            if ($class === 'space') {
+                $referer = $request->headers->get('referer');
+                if ($referer) {
+                    return $this->redirect($referer);
+                }
+            }
             return $this->redirectToRoute('app_entity_index', ['class' => strtolower($class)]);
         }
 
@@ -106,6 +112,12 @@ final class EntityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            if ($class === 'space') {
+                $referer = $request->headers->get('referer');
+                if ($referer) {
+                    return $this->redirect($referer);
+                }
+            }
             return $this->redirectToRoute('app_entity_index', ['class' => strtolower($class)]);
         }
 
@@ -119,7 +131,7 @@ final class EntityController extends AbstractController
     }
 
     #[Route('/{class}/{id}/delete', name: 'app_entity_delete', methods: ['GET'])]
-    public function delete(string $class, int $id, EntityManagerInterface $entityManager): RedirectResponse
+    public function delete(string $class, int $id, EntityManagerInterface $entityManager, Request $request): RedirectResponse
     {
         $entityClass = "App\\Entity\\" . ucfirst($class);
         if (!class_exists($entityClass)) {
@@ -134,6 +146,12 @@ final class EntityController extends AbstractController
         $entityManager->remove($item);
         $entityManager->flush();
 
+        if ($class === 'space') {
+            $referer = $request->headers->get('referer');
+            if ($referer) {
+                return $this->redirect($referer);
+            }
+        }
         return $this->redirectToRoute('app_entity_index', ['class' => strtolower($class)]);
     }
 }

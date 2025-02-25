@@ -29,8 +29,9 @@ class SpaceService
             $newspace->setParent($parent);
             $newspace->setProfessional($parent->isProfessional());
         }
-        $route = $space ? 'app_space_edit' : 'app_space_new';
+        $route = 'app_entity_' . ($space ? 'edit' : 'new');
         $routeParams = $space ? ['id' => $space->getId()] : [];
+        $routeParams['class'] = 'space';
         return $this->formFactory->create(
             SpaceType::class,
             $newspace,
