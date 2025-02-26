@@ -13,7 +13,7 @@
 	}
 	&:hover {
 		color: rgba(0, 0, 0, 0.85);
-		background-color: #d2f4ea;
+		background-color: rgba(0, 0, 0, 0.05);
 	}
 	transition: transform 0.35s ease;
 	// transform-origin: 0.5em 50%;
@@ -35,13 +35,14 @@
 	width: 100%;
 }
 a.collapse-summary:hover {
-	background-color: #d2f4ea;
+	background-color: rgba(0, 0, 0, 0.05);
 }
 
 .list-item {
 	.summary-container {
 		&:hover,
 		&:focus {
+			background-color: #d2f4ea;
 			.dropdown-toggle {
 				opacity: 1;
 				transition: opacity 0.35s ease;
@@ -74,6 +75,6 @@ a.collapse-summary:hover {
 	}
 	&:hover {
 		color: rgba(0, 0, 0, 0.85);
-		background-color: #d2f4ea;
+		background-color: rgba(0, 0, 0, 0.05);
 	}
 }
