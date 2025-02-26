@@ -1,0 +1,16 @@
+<div class='modal fade' id="{{ 'modal-' ~ id }}" tabindex='-1' role='dialog' aria-labelledby="{{ '#modal-' ~ id ~ '-label' }}" aria-hidden='true'>
+	<div class='modal-dialog' role='document'>
+		<div class='modal-content'>
+			<div class='modal-header'>
+				<h2 id="{{ 'modal-' ~ id ~ '-label' }}" class='modal-title'>{{ title }}</h2>
+				<button type='button' class='close' data-bs-dismiss='modal' aria-label='Close'>
+					<span aria-hidden='true'>&times;</span>
+				</button>
+			</div>
+			<div class='modal-body'> {% block body %}{% endblock %}
+				</div>
+				<div class='modal-footer'> {% block footer %}{% endblock %}
+					</div>
+				</div>
+			</div>
+		</div>
