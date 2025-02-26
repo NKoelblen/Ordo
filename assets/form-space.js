@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (!id) {
 				modalTitle.textContent = 'New ' + modalTitleContent;
 			} else {
-				modalTitle.textContent = 'New Child' + modalTitleContent;
+				modalTitle.textContent = 'New Child ' + modalTitleContent;
 				spaceParentField.value = id;
 			}
 		}

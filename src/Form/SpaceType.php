@@ -14,12 +14,14 @@ class SpaceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('id', null, ['attr' => ['class' => 'hidden']])
-            ->add(child: 'name', options: ['label' => false])
+            ->add('id', null, [
+                'required' => false,
+                'attr' => ['class' => 'hidden'],
+            ])
+            ->add(child: 'name')
             ->add('parent', EntityType::class, [
                 'class' => Space::class,
                 'choice_label' => 'name',
-                'label' => false,
                 'required' => false,
             ])
         ;
