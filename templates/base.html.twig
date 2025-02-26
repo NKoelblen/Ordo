@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="UTF-8"/>
+		<meta charset='UTF-8'/>
 		<title>
 			{% block title %}
 				Welcome!
 			{% endblock %}
 		</title>
-		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>"/>
+		<link rel='icon' href='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>'/>
 		{% block stylesheets %}
 			{{ encore_entry_link_tags('app') }}
 		{% endblock %}
 
 		{% block javascripts %}
-			{{ encore_entry_script_tags('app') }}
-			{% block importmap %}
+		{{ encore_entry_script_tags('app') }}
+		{# {% block importmap %}
 				{{ importmap('app') }}
-			{% endblock %}
-		{% endblock %}
+			{% endblock %} #}{% endblock %}
 	</head>
 
 	<body>
@@ -33,42 +32,45 @@
 			</ul>
 		</nav>
 
-		<div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
-			<a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
-				<span class="fs-5 fw-semibold">Ordo</span>
+		<div class='flex-shrink-0 p-3 bg-white' style='width: 280px;'>
+			<a href='/' class='d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom'>
+				<span class='fs-5 fw-semibold'>Ordo</span>
 			</a>
 
-			<ul class="list-unstyled ps-0 btn-toggle-nav">
+			<ul class='list-unstyled ps-0 btn-toggle-nav'>
 
-				<li class="mb-1">
-					<a href="/" class="link-dark rounded">Home</a>
+				<li class='mb-3 border-bottom'>
+					<a href='/' class='link-dark rounded'>Home</a>
 				</li>
 
 				{% macro render_space(space, spaces) %}
-					<li class="mb-1">
-						<button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="{{ '#collapse-space-' ~ space.id }}" aria-expanded="false"></button>
-						<a href="{{ path('app_entity_show', { class: space|class_name|lower, id: space.id }) }}" class="link-dark rounded">{{ space.name }}</a>
+					<li class='mb-1'>
+						<button class='btn btn-toggle align-items-center rounded collapsed' data-bs-toggle='collapse' data-bs-target="{{ '#collapse-space-' ~ space.id }}" aria-expanded='false'></button>
+						<a href="{{ path('app_entity_show', { class: space|class_name|lower, id: space.id }) }}" class='link-dark rounded'>{{ space.name }}</a>
+						<div class='dropdown'>
+							<a href='#' class='d-flex align-items-center link-dark text-decoration-none dropdown-toggle' id="{{ 'dropdown-space-' ~ space.id }}" data-bs-toggle='dropdown' aria-expanded='false'>
+								<strong>| | |</strong>
+							</a>
+							<ul class='dropdown-menu text-small shadow' aria-labelledby="{{ '#dropdown-space-' ~ space.id }}" style=''>
+								<li>
+									<span class='open-modal-space dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-space' data-mode='new' data-id="{{ space.id }}">New Child</span>
+								</li>
+								<li>
+									<span class='open-modal-space dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-space' data-mode='edit' data-id="{{ space.id }}">Edit</span>
+								</li>
+								<li>
+									<a href="{{ path('app_entity_delete', { class: space|class_name|lower, id: space.id }) }}" onclick='return confirm("Do you really want to delete this item?");'>Delete</a>
+								</li>
+							</ul>
+						</div>
 
-						{{ form_start(spaceForms['edit'][space.id]) }}
-						{{ form_widget(spaceForms['edit'][space.id]) }}
-						<button type="submit">Save</button>
-						{{ form_end(spaceForms['edit'][space.id]) }}
-						<a href="{{ path('app_entity_delete', { class: space|class_name|lower, id: space.id }) }}" onclick="return confirm('Do you really want to delete this item?');">-</a>
-
-						<div class="collapse" id="{{ 'collapse-space-' ~ space.id }}">
+						<div class='collapse' id="{{ 'collapse-space-' ~ space.id }}">
 							{% set children = spaces|filter(s => s.parent and s.parent.id == space.id) %}
 
-							<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+							<ul class='btn-toggle-nav list-unstyled fw-normal pb-1 small'>
 								{% for child in children %}
 									{{ _self.render_space(child, spaces) }}
 								{% endfor %}
-
-								<li>
-									{{ form_start(spaceForms['new'][space.id]) }}
-									{{ form_widget(spaceForms['new'][space.id]) }}
-									<button type="submit">+</button>
-									{{ form_end(spaceForms['new'][space.id]) }}
-								</li>
 							</ul>
 						</div>
 					</li>
@@ -82,12 +84,26 @@
 				{% endfor %}
 
 				<li>
-					{{ form_start(spaceForms['new']['-1']) }}
-					{{ form_widget(spaceForms['new']['-1']) }}
-					<button type="submit">+</button>
-					{{ form_end(spaceForms['new']['-1']) }}
+					<span class='open-modal-space dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-space' data-mode='new'>New</span>
 				</li>
 			</ul>
+
+			<twig:Modal id='space' title='New Space'>
+				<twig:block name='body'>
+					{{ form_start(spaceForm, {'attr': {
+						'id': 'form-space',
+						'data-new-action': path('app_entity_new', {'class': 'space'}),
+						'data-edit-action': path('app_entity_edit', {'class': 'space', 'id': 'PLACEHOLDER'})}
+					}) }}
+
+					{{ form_widget(spaceForm) }}
+					{{ form_end(spaceForm) }}
+				</twig:block>
+
+				<twig:block name='footer'>
+					<button type='submit' form='form-new-space' id='submit-form-space' class='btn btn-primary'>Save</button>
+				</twig:block>
+			</twig:Modal>
 		</div>
 
 		<main>

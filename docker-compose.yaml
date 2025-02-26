@@ -26,6 +26,8 @@ services:
             MYSQL_PASSWORD: root
         ports:
             - '3306:3306'
+        volumes:
+            - database_data:/var/lib/mysql
         # networks:
         #     - ordo
 ###< doctrine/doctrine-bundle ###

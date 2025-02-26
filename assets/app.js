@@ -5,7 +5,9 @@
  * This file will be included onto the page via the importmap() Twig function,
  * which should already be in your base.html.twig.
  */
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap';
+const $ = require('jquery');
+require('bootstrap');
 
 import './styles/app.scss';
+
+import './form-space.js';

@@ -22,31 +22,8 @@ class SpaceService
         return $this->spaceRepository->findBy([], ['parent' => 'ASC', 'name' => 'ASC']);
     }
 
-    public function createSpaceForm(?Space $space = null, ?Space $parent = null)
+    public function createSpaceForm()
     {
-        $newspace = $space ?? new Space();
-        if ($parent) {
-            $newspace->setParent($parent);
-            $newspace->setProfessional($parent->isProfessional());
-        }
-        $route = 'app_entity_' . ($space ? 'edit' : 'new');
-        $routeParams = $space ? ['id' => $space->getId()] : [];
-        $routeParams['class'] = 'space';
-        return $this->formFactory->create(
-            SpaceType::class,
-            $newspace,
-            ['action' => $this->router->generate($route, $routeParams)]
-        );
-    }
-
-    public function createMultipleSpaceForms()
-    {
-        $spaces = $this->getSpaces();
-        $forms = ['new' => ['-1' => $this->createSpaceForm()->createView()]];
-        foreach ($spaces as $space) {
-            $forms['new'][$space->getId()] = $this->createSpaceForm(parent: $space)->createView();
-            $forms['edit'][$space->getId()] = $this->createSpaceForm($space)->createView();
-        }
-        return $forms;
+        return $this->formFactory->create(SpaceType::class);
     }
 }

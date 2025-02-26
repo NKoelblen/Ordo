@@ -34,8 +34,8 @@ final class EntityController extends AbstractController
         );
     }
 
-    #[Route('/{class}/new', name: 'app_entity_new', methods: ['GET', 'POST'])]
-    public function new(string $class, Request $request, EntityManagerInterface $entityManager, FormFactoryInterface $formFactory): Response
+    #[Route('/{class}/new/{parentId}', name: 'app_entity_new', methods: ['GET', 'POST'])]
+    public function new(string $class, Request $request, EntityManagerInterface $entityManager, FormFactoryInterface $formFactory, ?int $parentId = null): Response
     {
         $entityClass = "App\\Entity\\" . ucfirst($class);
         if (!class_exists($entityClass)) {
