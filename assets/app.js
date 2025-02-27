@@ -10,4 +10,4 @@ require('bootstrap');
 
 import './styles/app.scss';
 
-import './form-space.js';
+import './js/form-space.js';
