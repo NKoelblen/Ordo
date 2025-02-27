@@ -1,4 +1,10 @@
-@import '~bootstrap/scss/bootstrap';
+@import '_colors.scss';
+// @import 'node_modules/bootstrap/scss/variables';
+@import 'node_modules/bootstrap/scss/bootstrap';
+
+body {
+	background-color: rgb(250, 250, 250);
+}
 
 .btn-toggle {
 	display: inline-flex;
@@ -32,7 +38,7 @@
 	padding: 0.1875rem 0.5rem;
 	margin-top: 0.125rem;
 	text-decoration: none;
-	width: 100%;
+	flex: 1;
 }
 a.collapse-summary:hover {
 	background-color: rgba(0, 0, 0, 0.05);
