@@ -59,7 +59,7 @@
 					// Flexbox
 					align-items: stretch;
 					// Spacing
-					margin: 0 0.25rem;
+					margin: 0.25rem;
 					// Border
 					border-radius: 0.25rem;
 
@@ -184,7 +184,7 @@
 					&:has(a.collapse-summary) {
 						&:hover,
 						&:focus,
-						&:active {
+						&.active {
 							// Background
 							background-color: $golden;
 						}

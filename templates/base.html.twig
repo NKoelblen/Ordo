@@ -39,7 +39,8 @@
 				<ul class='navbar-nav'>
 					<li class='nav-item'>
 						<div class='nav-summary'>
-							<a href='/' class='nav-link collapse-summary'>Home</a>
+							<a href='/' class='nav-link collapse-summary {% if app.request.get("_route") == "app_home" %}active{% endif %}'>Home</a>
+
 						</div>
 					</li>
 
@@ -57,11 +58,25 @@
 						</div>
 						<ul class='btn-toggle-nav navbar-nav root-items'>
 							{% macro render_space(space, spaces) %}
+								{% set has_show_class = false %}
+								{% if app.request.get("_route") == "app_entity_show" and app.request.get("id") == space.id %}
+									{% set has_show_class = true %}
+								{% endif %}
+
 								{% set children = spaces|filter(s => s.parent and s.parent.id == space.id) %}
+								{% if children is not empty %}
+									{% for child in children %}
+										{% if app.request.get("_route") == "app_entity_show" and app.request.get("id") == child.id %}
+											{% set has_show_class = true %}
+										{% endif %}
+									{% endfor %}
+								{% endif %}
+
 								<li class='nav-item'>
-									<div class='nav-summary'>
+									<div class='nav-summary {% if app.request.get("_route") == "app_entity_show" and app.request.get("id") == space.id %}active{% endif %}'>
 										{% if children is not empty %}
-											<button class='btn-toggle collapsed' data-bs-toggle='collapse' data-bs-target="{{ '#collapse-space-' ~ space.id }}" aria-expanded='false'>
+											<button class='btn-toggle {% if app.request.get("_route") != "app_entity_show" and app.request.get("id") != space.id %}collapsed{% endif %}' data-bs-toggle='collapse' data-bs-target="{{ '#collapse-space-' ~ space.id }}" aria-expanded='{{ has_show_class ? 'true' : 'false' }}'>
+
 												<twig:ux:icon name='radix-icons:caret-right'/>
 											</button>
 										{% endif %}
@@ -83,7 +98,7 @@
 									</div>
 
 									{% if children is not empty %}
-										<div class='collapse' id="{{ 'collapse-space-' ~ space.id }}">
+										<div class='collapse {% if has_show_class %}show{% endif %}' id="{{ 'collapse-space-' ~ space.id }}">
 											<ul class='navbar-nav btn-toggle-nav'>
 												{% for child in children %}
 													{{ _self.render_space(child, spaces) }}
