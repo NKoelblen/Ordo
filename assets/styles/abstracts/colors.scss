@@ -1,0 +1,472 @@
+@import 'node_modules/bootstrap/scss/functions';
+@import 'node_modules/bootstrap/scss/mixins';
+
+$red: #fb2c36;
+$orange: #fc7100;
+$amber: #f69e00;
+$yellow: #eab300;
+$lime: #83cc00;
+$green: #00c65a;
+$emerald: #00b981;
+$teal: #00b9a6;
+$cyan: #00b6d4;
+$sky: #00a5ea;
+$blue: #3280ff;
+$indigo: #6260ff;
+$violet: #8d56ff;
+$purple: #ab4eff;
+$fuchsia: #e12afb;
+$pink: #f6339a;
+$rose: #ff2357;
+$slate: #62748e;
+$gray: #6a7282;
+$zinc: #71717b;
+$neutral: #737373;
+$stone: #79716b;
+$golden: #a38043;
+
+$red-50: tint-color($red, 90%);
+$red-950: shade-color($red, 90%);
+
+$orange-50: tint-color($orange, 90%);
+$orange-950: shade-color($orange, 90%);
+
+$amber-50: tint-color($amber, 90%);
+$amber-100: tint-color($amber, 80%);
+$amber-200: tint-color($amber, 60%);
+$amber-300: tint-color($amber, 40%);
+$amber-400: tint-color($amber, 20%);
+$amber-500: $amber;
+$amber-600: shade-color($amber, 20%);
+$amber-700: shade-color($amber, 40%);
+$amber-800: shade-color($amber, 60%);
+$amber-900: shade-color($amber, 80%);
+$amber-950: shade-color($amber, 90%);
+
+$yellow-50: tint-color($yellow, 90%);
+$yellow-950: shade-color($yellow, 90%);
+
+$lime-50: tint-color($lime, 90%);
+$lime-100: tint-color($lime, 80%);
+$lime-200: tint-color($lime, 60%);
+$lime-300: tint-color($lime, 40%);
+$lime-400: tint-color($lime, 20%);
+$lime-500: $lime;
+$lime-600: shade-color($lime, 20%);
+$lime-700: shade-color($lime, 40%);
+$lime-800: shade-color($lime, 60%);
+$lime-900: shade-color($lime, 80%);
+$lime-950: shade-color($lime, 90%);
+
+$green-50: tint-color($green, 90%);
+$green-950: shade-color($green, 90%);
+
+$emerald-50: tint-color($emerald, 90%);
+$emerald-100: tint-color($emerald, 80%);
+$emerald-200: tint-color($emerald, 60%);
+$emerald-300: tint-color($emerald, 40%);
+$emerald-400: tint-color($emerald, 20%);
+$emerald-500: $emerald;
+$emerald-600: shade-color($emerald, 20%);
+$emerald-700: shade-color($emerald, 40%);
+$emerald-800: shade-color($emerald, 60%);
+$emerald-900: shade-color($emerald, 80%);
+$emerald-950: shade-color($emerald, 90%);
+
+$teal-50: tint-color($teal, 90%);
+$teal-950: shade-color($teal, 90%);
+
+$cyan-50: tint-color($cyan, 90%);
+$cyan-950: shade-color($cyan, 90%);
+
+$sky-50: tint-color($sky, 90%);
+$sky-100: tint-color($sky, 80%);
+$sky-200: tint-color($sky, 60%);
+$sky-300: tint-color($sky, 40%);
+$sky-400: tint-color($sky, 20%);
+$sky-500: $sky;
+$sky-600: shade-color($sky, 20%);
+$sky-700: shade-color($sky, 40%);
+$sky-800: shade-color($sky, 60%);
+$sky-900: shade-color($sky, 80%);
+$sky-950: shade-color($sky, 90%);
+
+$blue-50: tint-color($blue, 90%);
+$blue-950: shade-color($blue, 90%);
+
+$indigo-50: tint-color($indigo, 90%);
+$indigo-950: shade-color($indigo, 90%);
+
+$violet-50: tint-color($violet, 90%);
+$violet-100: tint-color($violet, 80%);
+$violet-200: tint-color($violet, 60%);
+$violet-300: tint-color($violet, 40%);
+$violet-400: tint-color($violet, 20%);
+$violet-500: $violet;
+$violet-600: shade-color($violet, 20%);
+$violet-700: shade-color($violet, 40%);
+$violet-800: shade-color($violet, 60%);
+$violet-900: shade-color($violet, 80%);
+$violet-950: shade-color($violet, 90%);
+
+$purple-50: tint-color($purple, 90%);
+$purple-950: shade-color($purple, 90%);
+
+$fuchsia-50: tint-color($fuchsia, 90%);
+$fuchsia-100: tint-color($fuchsia, 80%);
+$fuchsia-200: tint-color($fuchsia, 60%);
+$fuchsia-300: tint-color($fuchsia, 40%);
+$fuchsia-400: tint-color($fuchsia, 20%);
+$fuchsia-500: $fuchsia;
+$fuchsia-600: shade-color($fuchsia, 20%);
+$fuchsia-700: shade-color($fuchsia, 40%);
+$fuchsia-800: shade-color($fuchsia, 60%);
+$fuchsia-900: shade-color($fuchsia, 80%);
+$fuchsia-950: shade-color($fuchsia, 90%);
+
+$pink-50: tint-color($pink, 90%);
+$pink-950: shade-color($pink, 90%);
+
+$rose-50: tint-color($rose, 90%);
+$rose-100: tint-color($rose, 80%);
+$rose-200: tint-color($rose, 60%);
+$rose-300: tint-color($rose, 40%);
+$rose-400: tint-color($rose, 20%);
+$rose-500: $rose;
+$rose-600: shade-color($rose, 20%);
+$rose-700: shade-color($rose, 40%);
+$rose-800: shade-color($rose, 60%);
+$rose-900: shade-color($rose, 80%);
+$rose-950: shade-color($rose, 90%);
+
+$slate-50: tint-color($slate, 90%);
+$slate-100: tint-color($slate, 80%);
+$slate-200: tint-color($slate, 60%);
+$slate-300: tint-color($slate, 40%);
+$slate-400: tint-color($slate, 20%);
+$slate-500: $slate;
+$slate-600: shade-color($slate, 20%);
+$slate-700: shade-color($slate, 40%);
+$slate-800: shade-color($slate, 60%);
+$slate-900: shade-color($slate, 80%);
+$slate-950: shade-color($slate, 90%);
+
+$gray-50: tint-color($gray, 90%);
+$gray-100: tint-color($gray, 80%);
+$gray-200: tint-color($gray, 60%);
+$gray-300: tint-color($gray, 40%);
+$gray-400: tint-color($gray, 20%);
+$gray-500: $gray;
+$gray-600: shade-color($gray, 20%);
+$gray-700: shade-color($gray, 40%);
+$gray-800: shade-color($gray, 60%);
+$gray-900: shade-color($gray, 80%);
+$gray-950: shade-color($gray, 90%);
+
+$zinc-50: tint-color($zinc, 90%);
+$zinc-100: tint-color($zinc, 80%);
+$zinc-200: tint-color($zinc, 60%);
+$zinc-300: tint-color($zinc, 40%);
+$zinc-400: tint-color($zinc, 20%);
+$zinc-500: $zinc;
+$zinc-600: shade-color($zinc, 20%);
+$zinc-700: shade-color($zinc, 40%);
+$zinc-800: shade-color($zinc, 60%);
+$zinc-900: shade-color($zinc, 80%);
+$zinc-950: shade-color($zinc, 90%);
+
+$neutral-50: tint-color($neutral, 90%);
+$neutral-100: tint-color($neutral, 80%);
+$neutral-200: tint-color($neutral, 60%);
+$neutral-300: tint-color($neutral, 40%);
+$neutral-400: tint-color($neutral, 20%);
+$neutral-500: $neutral;
+$neutral-600: shade-color($neutral, 20%);
+$neutral-700: shade-color($neutral, 40%);
+$neutral-800: shade-color($neutral, 60%);
+$neutral-900: shade-color($neutral, 80%);
+$neutral-950: shade-color($neutral, 90%);
+
+$stone-50: tint-color($stone, 90%);
+$stone-100: tint-color($stone, 80%);
+$stone-200: tint-color($stone, 60%);
+$stone-300: tint-color($stone, 40%);
+$stone-400: tint-color($stone, 20%);
+$stone-500: $stone;
+$stone-600: shade-color($stone, 20%);
+$stone-700: shade-color($stone, 40%);
+$stone-800: shade-color($stone, 60%);
+$stone-900: shade-color($stone, 80%);
+$stone-950: shade-color($stone, 90%);
+
+$golden-50: tint-color($golden, 90%);
+$golden-100: tint-color($golden, 80%);
+$golden-200: tint-color($golden, 60%);
+$golden-300: tint-color($golden, 40%);
+$golden-400: tint-color($golden, 20%);
+$golden-500: $golden;
+$golden-600: shade-color($golden, 20%);
+$golden-700: shade-color($golden, 40%);
+$golden-800: shade-color($golden, 60%);
+$golden-900: shade-color($golden, 80%);
+$golden-950: shade-color($golden, 90%);
+
+$black: #000;
+$white: #fff;
+
+$primary: $golden;
+$success: $lime;
+$info: $teal;
+$warning: $amber;
+$light: $gray-50;
+$dark: $gray-950;
+
+$body-color-dark: $gray-50;
+// $body-bg-dark: $gray-950;
+// $body-secondary-bg-dark: $gray-900;
+$form-valid-color-dark: $lime-300;
+$form-valid-border-color-dark: $lime-300;
+
+@import 'node_modules/bootstrap/scss/variables';
+
+$custom-reds: (
+	'red-50': $red-50,
+	'red-950': $red-950,
+);
+$reds: map-merge($reds, $custom-reds);
+
+$custom-oranges: (
+	'orange-50': $orange-50,
+	'orange-950': $orange-950,
+);
+$oranges: map-merge($oranges, $custom-oranges);
+
+$ambers: (
+	'amber-50': $amber-50,
+	'amber-100': $amber-100,
+	'amber-200': $amber-200,
+	'amber-300': $amber-300,
+	'amber-400': $amber-400,
+	'amber-500': $amber-500,
+	'amber-600': $amber-600,
+	'amber-700': $amber-700,
+	'amber-800': $amber-800,
+	'amber-900': $amber-900,
+	'amber-950': $amber-950,
+);
+
+$custom-yellows: (
+	'yellow-50': $yellow-50,
+	'yellow-950': $yellow-950,
+);
+$yellows: map-merge($yellows, $custom-yellows);
+
+$limes: (
+	'lime-50': $lime-50,
+	'lime-100': $lime-100,
+	'lime-200': $lime-200,
+	'lime-300': $lime-300,
+	'lime-400': $lime-400,
+	'lime-500': $lime-500,
+	'lime-600': $lime-600,
+	'lime-700': $lime-700,
+	'lime-800': $lime-800,
+	'lime-900': $lime-900,
+	'lime-950': $lime-950,
+);
+
+$custom-greens: (
+	'green-50': $green-50,
+	'green-950': $green-950,
+);
+$greens: map-merge($greens, $custom-greens);
+
+$emeralds: (
+	'emerald-50': $emerald-50,
+	'emerald-100': $emerald-100,
+	'emerald-200': $emerald-200,
+	'emerald-300': $emerald-300,
+	'emerald-400': $emerald-400,
+	'emerald-500': $emerald-500,
+	'emerald-600': $emerald-600,
+	'emerald-700': $emerald-700,
+	'emerald-800': $emerald-800,
+	'emerald-900': $emerald-900,
+	'emerald-950': $emerald-950,
+);
+
+$custom-teals: (
+	'teal-50': $teal-50,
+	'teal-950': $teal-950,
+);
+$teals: map-merge($teals, $custom-teals);
+
+$custom-cyans: (
+	'cyan-50': $cyan-50,
+	'cyan-950': $cyan-950,
+);
+$cyans: map-merge($cyans, $custom-cyans);
+
+$skys: (
+	'sky-50': $sky-50,
+	'sky-100': $sky-100,
+	'sky-200': $sky-200,
+	'sky-300': $sky-300,
+	'sky-400': $sky-400,
+	'sky-500': $sky-500,
+	'sky-600': $sky-600,
+	'sky-700': $sky-700,
+	'sky-800': $sky-800,
+	'sky-900': $sky-900,
+	'sky-950': $sky-950,
+);
+
+$custom-blues: (
+	'blue-50': $blue-50,
+	'blue-950': $blue-950,
+);
+$blues: map-merge($blues, $custom-blues);
+
+$custom-indigos: (
+	'indigo-50': $indigo-50,
+	'indigo-950': $indigo-950,
+);
+$indigos: map-merge($indigos, $custom-indigos);
+
+$violets: (
+	'violet-50': $violet-50,
+	'violet-100': $violet-100,
+	'violet-200': $violet-200,
+	'violet-300': $violet-300,
+	'violet-400': $violet-400,
+	'violet-500': $violet-500,
+	'violet-600': $violet-600,
+	'violet-700': $violet-700,
+	'violet-800': $violet-800,
+	'violet-900': $violet-900,
+	'violet-950': $violet-950,
+);
+
+$custom-purples: (
+	'purple-50': $purple-50,
+	'purple-950': $purple-950,
+);
+$purples: map-merge($purples, $custom-purples);
+
+$fuchsias: (
+	'fuchsia-50': $fuchsia-50,
+	'fuchsia-100': $fuchsia-100,
+	'fuchsia-200': $fuchsia-200,
+	'fuchsia-300': $fuchsia-300,
+	'fuchsia-400': $fuchsia-400,
+	'fuchsia-500': $fuchsia-500,
+	'fuchsia-600': $fuchsia-600,
+	'fuchsia-700': $fuchsia-700,
+	'fuchsia-800': $fuchsia-800,
+	'fuchsia-900': $fuchsia-900,
+	'fuchsia-950': $fuchsia-950,
+);
+
+$custom-pinks: (
+	'pink-50': $pink-50,
+	'pink-950': $pink-950,
+);
+$pinks: map-merge($pinks, $custom-pinks);
+
+$roses: (
+	'rose-50': $rose-50,
+	'rose-100': $rose-100,
+	'rose-200': $rose-200,
+	'rose-300': $rose-300,
+	'rose-400': $rose-400,
+	'rose-500': $rose-500,
+	'rose-600': $rose-600,
+	'rose-700': $rose-700,
+	'rose-800': $rose-800,
+	'rose-900': $rose-900,
+	'rose-950': $rose-950,
+);
+
+$slates: (
+	'slate-50': $slate-50,
+	'slate-100': $slate-100,
+	'slate-200': $slate-200,
+	'slate-300': $slate-300,
+	'slate-400': $slate-400,
+	'slate-500': $slate-500,
+	'slate-600': $slate-600,
+	'slate-700': $slate-700,
+	'slate-800': $slate-800,
+	'slate-900': $slate-900,
+	'slate-950': $slate-950,
+);
+
+$grays: (
+	'gray-50': $gray-50,
+	'gray-100': $gray-100,
+	'gray-200': $gray-200,
+	'gray-300': $gray-300,
+	'gray-400': $gray-400,
+	'gray-500': $gray-500,
+	'gray-600': $gray-600,
+	'gray-700': $gray-700,
+	'gray-800': $gray-800,
+	'gray-900': $gray-900,
+	'gray-950': $gray-950,
+);
+
+$zincs: (
+	'zinc-50': $zinc-50,
+	'zinc-100': $zinc-100,
+	'zinc-200': $zinc-200,
+	'zinc-300': $zinc-300,
+	'zinc-400': $zinc-400,
+	'zinc-500': $zinc-500,
+	'zinc-600': $zinc-600,
+	'zinc-700': $zinc-700,
+	'zinc-800': $zinc-800,
+	'zinc-900': $zinc-900,
+	'zinc-950': $zinc-950,
+);
+
+$neutrals: (
+	'neutral-50': $neutral-50,
+	'neutral-100': $neutral-100,
+	'neutral-200': $neutral-200,
+	'neutral-300': $neutral-300,
+	'neutral-400': $neutral-400,
+	'neutral-500': $neutral-500,
+	'neutral-600': $neutral-600,
+	'neutral-700': $neutral-700,
+	'neutral-800': $neutral-800,
+	'neutral-900': $neutral-900,
+	'neutral-950': $neutral-950,
+);
+
+$stones: (
+	'stone-50': $stone-50,
+	'stone-100': $stone-100,
+	'stone-200': $stone-200,
+	'stone-300': $stone-300,
+	'stone-400': $stone-400,
+	'stone-500': $stone-500,
+	'stone-600': $stone-600,
+	'stone-700': $stone-700,
+	'stone-800': $stone-800,
+	'stone-900': $stone-900,
+	'stone-950': $stone-950,
+);
+
+$goldens: (
+	'golden-50': $golden-50,
+	'golden-100': $golden-100,
+	'golden-200': $golden-200,
+	'golden-300': $golden-300,
+	'golden-400': $golden-400,
+	'golden-500': $golden-500,
+	'golden-600': $golden-600,
+	'golden-700': $golden-700,
+	'golden-800': $golden-800,
+	'golden-900': $golden-900,
+	'golden-950': $golden-950,
+);
