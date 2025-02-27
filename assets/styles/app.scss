@@ -2,15 +2,10 @@
 // @import 'node_modules/bootstrap/scss/variables';
 @import 'node_modules/bootstrap/scss/bootstrap';
 
-body {
-	background-color: rgb(250, 250, 250);
-}
-
 .btn-toggle {
 	display: inline-flex;
 	align-items: center;
 	padding: 0.25rem 0;
-	color: rgba(0, 0, 0, 0.65);
 	background-color: transparent;
 	border: 0;
 	svg {
@@ -18,13 +13,11 @@ body {
 		width: 1rem;
 	}
 	&:hover {
-		color: rgba(0, 0, 0, 0.85);
 		background-color: rgba(0, 0, 0, 0.05);
 	}
 	transition: transform 0.35s ease;
 	// transform-origin: 0.5em 50%;
 	&[aria-expanded='true'] {
-		color: rgba(0, 0, 0, 0.85);
 		transform: rotate(90deg);
 	}
 	&-nav {
@@ -80,7 +73,6 @@ a.collapse-summary:hover {
 		display: none;
 	}
 	&:hover {
-		color: rgba(0, 0, 0, 0.85);
 		background-color: rgba(0, 0, 0, 0.05);
 	}
 }

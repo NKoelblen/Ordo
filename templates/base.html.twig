@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-bs-theme='dark'>
 	<head>
 		<meta charset='UTF-8'/>
 		<title>
@@ -30,14 +30,14 @@
 			</ul>
 		</nav>
 
-		<div class='flex-shrink-0 p-3 bg-white' style='width: 280px;'>
-			<a href='/' class='d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom'>
+		<div class='flex-shrink-0 p-3' style='width: 280px;'>
+			<a href='/' class='d-flex align-items-center pb-3 mb-3 text-decoration-none border-bottom'>
 				<span class='fs-5 fw-semibold'>Ordo</span>
 			</a>
 
 			<ul class='list-unstyled ps-0'>
 				<li class='mb-3 border-bottom'>
-					<a href='/' class='collapse-summary link-dark rounded'>Home</a>
+					<a href='/' class='collapse-summary rounded'>Home</a>
 				</li>
 
 				<li class='list-item mb-3'>
@@ -62,7 +62,7 @@
 											<twig:ux:icon name='radix-icons:caret-right'/>
 										</button>
 									{% endif %}
-									<a href="{{ path('app_entity_show', { class: space|class_name|lower, id: space.id }) }}" class='collapse-summary link-dark rounded'>{{ space.name }}</a>
+									<a href="{{ path('app_entity_show', { class: space|class_name|lower, id: space.id }) }}" class='collapse-summary rounded'>{{ space.name }}</a>
 									<div class='dropdown'>
 										<span class='dropdown-toggle rounded' id="{{ 'dropdown-space-' ~ space.id }}" data-bs-toggle='dropdown' aria-expanded='false'>
 											<twig:ux:icon name='radix-icons:dots-horizontal'/>
