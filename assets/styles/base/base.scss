@@ -17,18 +17,21 @@ body {
 	line-height: 1.5;
 	// Animation
 	// Interactivity
+}
+::-webkit-scrollbar {
+	// Sizing
+	width: 3px;
+	height: 3px;
 
-	::-webkit-scrollbar {
-		width: 3px;
-		height: 3px;
-
-		&-track {
-			background: $body-bg-dark;
-		}
-		&-thumb {
-			background-color: $body-tertiary-color-dark;
-			border: 1px solid $body-bg-dark;
-			border-radius: 1px;
-		}
+	&-track {
+		// Background
+		background: $body-bg-dark;
+	}
+	&-thumb {
+		// Background
+		background-color: $body-tertiary-color-dark;
+		// Border
+		border: 1px solid $body-bg-dark;
+		border-radius: 1px;
 	}
 }

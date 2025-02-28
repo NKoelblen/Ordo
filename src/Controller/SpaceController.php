@@ -26,6 +26,7 @@ final class SpaceController extends AbstractController
         $data = [
             'id' => $space->getId(),
             'name' => $space->getName(),
+            'professional' => $space->isProfessional(),
             'parent' => $space->getParent() ? $space->getParent()->getId() : null,
         ];
 

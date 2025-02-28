@@ -1,6 +1,6 @@
 #site-sidebar {
 	// Layout
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	display: block;
@@ -35,6 +35,8 @@
 		// Spacing
 		margin: 0;
 		padding: 2rem 2rem 1rem;
+		// Background
+		background-color: $gray-950;
 		// Border
 		border-bottom: $border-width solid $border-color-dark;
 		// Typography
