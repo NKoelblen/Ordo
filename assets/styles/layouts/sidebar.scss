@@ -114,6 +114,12 @@
 						align-items: end;
 						// Spacing
 						padding: 0.25rem 0.5rem;
+
+						&:hover,
+						&:focus {
+							// Background
+							background-color: rgba(0, 0, 0, 0.1);
+						}
 					}
 
 					.dropdown {
@@ -171,7 +177,7 @@
 					&:hover,
 					&:focus,
 					&:has(.btn-toggle[aria-expanded='true']),
-					&:has(.collapse-summary:not(a)),
+					&:has(.nav-title),
 					&.active {
 						.dropdown-toggle {
 							// Effects
@@ -186,7 +192,7 @@
 						&:focus,
 						&.active {
 							// Background
-							background-color: $golden;
+							background-color: $golden-700;
 						}
 					}
 				}
@@ -204,7 +210,7 @@
 
 					.dropdown-toggle:hover {
 						// Background
-						background: linear-gradient($golden, $golden), linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+						background: linear-gradient($golden-700, $golden-700), linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
 						// Border
 						border-radius: 0.25rem;
 					}

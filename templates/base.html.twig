@@ -58,25 +58,13 @@
 						</div>
 						<ul class='btn-toggle-nav navbar-nav root-items'>
 							{% macro render_space(space, spaces) %}
-								{% set has_show_class = false %}
-								{% if app.request.get("_route") == "app_entity_show" and app.request.get("id") == space.id %}
-									{% set has_show_class = true %}
-								{% endif %}
-
+								{% set has_show_class = _self.has_show_class(space, spaces)|spaceless %}
 								{% set children = spaces|filter(s => s.parent and s.parent.id == space.id) %}
-								{% if children is not empty %}
-									{% for child in children %}
-										{% if app.request.get("_route") == "app_entity_show" and app.request.get("id") == child.id %}
-											{% set has_show_class = true %}
-										{% endif %}
-									{% endfor %}
-								{% endif %}
 
 								<li class='nav-item'>
 									<div class='nav-summary {% if app.request.get("_route") == "app_entity_show" and app.request.get("id") == space.id %}active{% endif %}'>
 										{% if children is not empty %}
 											<button class='btn-toggle {% if app.request.get("_route") != "app_entity_show" and app.request.get("id") != space.id %}collapsed{% endif %}' data-bs-toggle='collapse' data-bs-target="{{ '#collapse-space-' ~ space.id }}" aria-expanded='{{ has_show_class ? 'true' : 'false' }}'>
-
 												<twig:ux:icon name='radix-icons:caret-right'/>
 											</button>
 										{% endif %}
@@ -107,6 +95,25 @@
 										</div>
 									{% endif %}
 								</li>
+							{% endmacro %}
+
+							{% macro has_show_class(space, spaces) %}
+								{% set has_show_class = '0' %}
+
+								{% if app.request.get("_route") == "app_entity_show" and app.request.get("id") == space.id %}
+									{% set has_show_class = '1' %}
+								{% endif %}
+
+								{% set children = spaces|filter(s => s.parent is not null and s.parent.id == space.id) %}
+								{% if children is not empty and has_show_class == '0' %}
+									{% for child in children %}
+										{% if _self.has_show_class(child, spaces)|trim == '1' %}
+											{% set has_show_class = '1' %}
+										{% endif %}
+									{% endfor %}
+								{% endif %}
+
+								{{ has_show_class }}
 							{% endmacro %}
 
 							{% import _self as macros %}
