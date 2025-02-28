@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Space;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,11 +15,14 @@ class SpaceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('id', null, [
+            ->add('id', HiddenType::class, [
                 'required' => false,
-                'attr' => ['class' => 'hidden'],
+                'mapped' => false,
             ])
-            ->add(child: 'name')
+            ->add('name')
+            ->add(child: 'professional', options: [
+                'required' => false,
+            ])
             ->add('parent', EntityType::class, [
                 'class' => Space::class,
                 'choice_label' => 'name',

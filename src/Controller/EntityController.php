@@ -150,22 +150,24 @@ final class EntityController extends AbstractController
 
         if ($class === 'space') {
             $referer = $request->headers->get('referer');
-            if ($referer && $this->isRouteValid($referer)) {
-                return $this->redirect($referer);
-            } else {
-                return $this->redirectToRoute('app_home');
+
+            if ($referer) {
+                $path = parse_url($referer, PHP_URL_PATH);
+
+                $entityExists = false;
+                $routeParams = $this->router->match($path);
+                if (isset($routeParams['id']) && isset($routeParams['class'])) {
+                    $entity = $entityManager->getRepository($entityClass)->find($routeParams['id']);
+                    $entityExists = $entity !== null ? true : false;
+                }
+
+                if ($entityExists) {
+                    return $this->redirect($referer);
+                } else {
+                    return $this->redirectToRoute('app_home');
+                }
             }
         }
         return $this->redirectToRoute('app_entity_index', ['class' => strtolower($class)]);
-    }
-
-    private function isRouteValid(string $url): bool
-    {
-        try {
-            $this->router->match(parse_url($url, PHP_URL_PATH));
-            return true;
-        } catch (\Exception $e) {
-            return false;
-        }
     }
 }
