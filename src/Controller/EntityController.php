@@ -10,9 +10,13 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 final class EntityController extends AbstractController
 {
+    public function __construct(private RouterInterface $router)
+    {
+    }
     #[Route('/{class}', name: 'app_entity_index', methods: ['GET'])]
     public function index(string $class, EntityManagerInterface $entityManager, FieldService $fieldService): Response
     {
@@ -53,11 +57,9 @@ final class EntityController extends AbstractController
             $entityManager->flush();
 
             if ($class === 'space') {
-                $referer = $request->headers->get('referer');
-                if ($referer) {
-                    return $this->redirect($referer);
-                }
+                return $this->redirectToRoute('app_entity_show', ['class' => strtolower($class), 'id' => $item->getId()]);
             }
+
             return $this->redirectToRoute('app_entity_index', ['class' => strtolower($class)]);
         }
 
@@ -148,10 +150,22 @@ final class EntityController extends AbstractController
 
         if ($class === 'space') {
             $referer = $request->headers->get('referer');
-            if ($referer) {
+            if ($referer && $this->isRouteValid($referer)) {
                 return $this->redirect($referer);
+            } else {
+                return $this->redirectToRoute('app_home');
             }
         }
         return $this->redirectToRoute('app_entity_index', ['class' => strtolower($class)]);
+    }
+
+    private function isRouteValid(string $url): bool
+    {
+        try {
+            $this->router->match(parse_url($url, PHP_URL_PATH));
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }
