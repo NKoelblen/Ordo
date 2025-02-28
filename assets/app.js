@@ -11,3 +11,4 @@ require('bootstrap');
 import './styles/app.scss';
 
 import './js/form-space.js';
+import './js/dropdown.js';

@@ -17,4 +17,18 @@ body {
 	line-height: 1.5;
 	// Animation
 	// Interactivity
+
+	::-webkit-scrollbar {
+		width: 3px;
+		height: 3px;
+
+		&-track {
+			background: $body-bg-dark;
+		}
+		&-thumb {
+			background-color: $body-tertiary-color-dark;
+			border: 1px solid $body-bg-dark;
+			border-radius: 1px;
+		}
+	}
 }

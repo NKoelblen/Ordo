@@ -79,7 +79,7 @@
 												<li class='open-modal-space dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-space' data-mode='new' data-id="{{ space.id }}">New Child</li>
 												<li class='open-modal-space dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-space' data-mode='edit' data-id="{{ space.id }}">Edit</li>
 												<li>
-													<a href="{{ path('app_entity_delete', { class: space|class_name|lower, id: space.id }) }}" class='open-modal-space dropdown-item' onclick='return confirm("Do you really want to delete this item?");'>Delete</a>
+													<a href="{{ path('app_entity_delete', { class: space|class_name|lower, id: space.id }) }}" class='dropdown-item' onclick='return confirm("Do you really want to delete this item?");'>Delete</a>
 												</li>
 											</ul>
 										</div>

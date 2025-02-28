@@ -1,18 +1,24 @@
-// @import 'node_modules/bootstrap/scss/variables';
-
 #site-sidebar {
 	// Layout
 	position: absolute;
 	top: 0;
 	left: 0;
 	display: block;
+	overflow: hidden auto;
 	// Sizing
 	width: 248px;
 	height: 100vh;
+	max-height: 100vh;
+	// Spacing
+	padding: 0;
 	// Background
 	background-color: $gray-950;
 	// Border
 	border-right: $border-width solid $border-color-dark;
+
+	&::-webkit-scrollbar-track {
+		background: $gray-950;
+	}
 
 	a {
 		// Typography
@@ -21,10 +27,13 @@
 
 	#site-title {
 		// Layout
+		position: sticky;
+		top: 0;
 		display: block;
 		// Sizing
 		width: 100%;
 		// Spacing
+		margin: 0;
 		padding: 2rem 2rem 1rem;
 		// Border
 		border-bottom: $border-width solid $border-color-dark;
@@ -123,9 +132,6 @@
 					}
 
 					.dropdown {
-						// Layout
-						position: relative;
-
 						.dropdown-toggle {
 							// Layout
 							display: block;
@@ -161,7 +167,9 @@
 
 						.dropdown-menu {
 							// Layout
-							position: absolute;
+							position: fixed;
+							top: 0;
+							left: 0;
 							// Spacing
 							padding: 0;
 							// Effects
@@ -189,7 +197,10 @@
 
 					&:has(a.collapse-summary) {
 						&:hover,
-						&:focus,
+						&:focus {
+							// Background
+							background-color: $body-tertiary-bg-dark;
+						}
 						&.active {
 							// Background
 							background-color: $golden-700;
@@ -205,12 +216,12 @@
 						// Typography
 						font-size: 0.75rem;
 						text-transform: uppercase;
-						color: $gray-300;
+						color: $body-tertiary-color-dark;
 					}
 
 					.dropdown-toggle:hover {
 						// Background
-						background: linear-gradient($golden-700, $golden-700), linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+						background: linear-gradient($body-tertiary-bg-dark, $body-tertiary-bg-dark), linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
 						// Border
 						border-radius: 0.25rem;
 					}
