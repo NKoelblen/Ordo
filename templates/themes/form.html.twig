@@ -1,0 +1,96 @@
+{% use "bootstrap_5_layout.html.twig" %}
+
+{# Widgets #}
+
+
+{%- block form_widget_compound -%}
+    {%- if form is rootform -%}
+        {{ form_errors(form) }}
+    {%- endif -%}
+    {{- block('form_rows') -}}
+    {{- form_rest(form) -}}
+{%- endblock form_widget_compound -%}
+
+{% block dateinterval_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{- block('form_widget_simple') -}}
+    {%- else -%}
+        {% if not valid %}
+            {% set attr = attr|merge({class: (attr.class|default('') ~ ' is-invalid')|trim}) -%}
+            {% set valid = true %}
+        {% endif %}
+        <div {{ block('widget_container_attributes') }}>
+            {%- if with_years -%}
+                <div class="col-auto ">
+                    {{ form_label(form.years) }}
+                    {{ form_widget(form.years) }}
+                </div>
+            {%- endif -%}
+            {%- if with_months -%}
+                <div class="col-auto ">
+                    {{ form_label(form.months) }}
+                    {{ form_widget(form.months) }}
+                </div>
+            {%- endif -%}
+            {%- if with_weeks -%}
+                <div class="col-auto ">
+                    {{ form_label(form.weeks) }}
+                    {{ form_widget(form.weeks) }}
+                </div>
+            {%- endif -%}
+            {%- if with_days -%}
+                <div class="col-auto ">
+                    {{ form_label(form.days) }}
+                    {{ form_widget(form.days) }}
+                </div>
+            {%- endif -%}
+            {%- if with_hours -%}
+                <div class="col-auto ">
+                    {{ form_label(form.hours) }}
+                    {{ form_widget(form.hours) }}
+                </div>
+            {%- endif -%}
+            {%- if with_minutes -%}
+                <div class="col-auto ">
+                    {{ form_label(form.minutes) }}
+                    {{ form_widget(form.minutes) }}
+                </div>
+            {%- endif -%}
+            {%- if with_seconds -%}
+                <div class="col-auto ">
+                    {{ form_label(form.seconds) }}
+                    {{ form_widget(form.seconds) }}
+                </div>
+            {%- endif -%}
+            {%- if with_invert %}{{ form_widget(form.invert) }}{% endif -%}
+        </div>
+    {%- endif -%}
+{%- endblock dateinterval_widget %}
+
+{%- block form_row -%}
+    {%- if compound is defined and compound -%}
+        {%- set element = 'fieldset' -%}
+    {%- endif -%}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+    {%- set row_class = row_class|default(row_attr.class|default('form-row')|trim) -%}
+    <{{ element|default('div') }}{% with {attr: row_attr|merge({class: row_class})} %}{{ block('attributes') }}{% endwith %}>
+        {%- if 'form-floating' in row_class -%}
+            {{- form_widget(form, widget_attr) -}}
+            {{- form_label(form) -}}
+        {%- else -%}
+            {{- form_label(form) -}}
+            {{- form_widget(form, widget_attr) -}}
+        {%- endif -%}
+        {{- form_help(form) -}}
+        {{- form_errors(form) -}}
+    </{{ element|default('div') }}>
+{%- endblock form_row %}
+
+{%- block button_row -%}
+    <div{% with {attr: row_attr|merge({class: row_attr.class|default('form-row')|trim})} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_widget(form) -}}
+    </div>
+{%- endblock button_row %}

@@ -1,0 +1,38 @@
+form {
+	// Layout
+	display: flex;
+	// Flexbos
+	flex-direction: column;
+	gap: 1rem;
+
+	.form-row {
+		// Layout
+		display: flex;
+		// Flexbox
+		flex-direction: column;
+		gap: 0.5rem;
+
+		.form-label {
+			// Spacing
+			margin: 0;
+		}
+
+		.form-check {
+			// Layout
+			display: flex;
+			// Flexbox
+			align-items: center;
+			gap: 0.5rem;
+			// Spacing
+			margin: 0;
+			padding: 0;
+
+			.form-check-input {
+				// Layout
+				float: none;
+				// Spacing
+				margin: 0;
+			}
+		}
+	}
+}
