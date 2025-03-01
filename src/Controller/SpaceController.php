@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Space;
 use App\Form\StatusSpaceType;
 use App\Repository\SpaceRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,6 +32,7 @@ final class SpaceController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->updateStatusRecursively($item, $item->getStatus(), $entityManager);
             $entityManager->flush();
 
             return $this->redirect($request->headers->get('referer'));
@@ -52,5 +54,12 @@ final class SpaceController extends AbstractController
         ];
 
         return new JsonResponse($data);
+    }
+    private function updateStatusRecursively(Space $space, string $status, EntityManagerInterface $entityManager)
+    {
+        $space->setStatus($status);
+        foreach ($space->getChildren() as $child) {
+            $this->updateStatusRecursively($child, $status, $entityManager);
+        }
     }
 }

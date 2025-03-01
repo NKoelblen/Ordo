@@ -6,6 +6,7 @@ use App\Entity\Space;
 use App\Form\SpaceType;
 use App\Form\StatusSpaceType;
 use App\Repository\SpaceRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -31,5 +32,13 @@ class SpaceService
     public function createStatusSpaceForm()
     {
         return $this->formFactory->create(StatusSpaceType::class);
+    }
+
+    public function updateProfessionalRecursively(Space $space, bool $professional, EntityManagerInterface $entityManager)
+    {
+        $space->setProfessional($professional);
+        foreach ($space->getChildren() as $child) {
+            $this->updateProfessionalRecursively($child, $professional, $entityManager);
+        }
     }
 }

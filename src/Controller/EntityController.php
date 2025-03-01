@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\FieldService;
+use App\Service\SpaceService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -14,7 +15,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 final class EntityController extends AbstractController
 {
-    public function __construct(private RouterInterface $router)
+    public function __construct(private RouterInterface $router, private SpaceService $spaceService)
     {
     }
     #[Route('/{class}', name: 'app_entity_index', methods: ['GET'])]
@@ -112,6 +113,10 @@ final class EntityController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($class === 'space') {
+                $this->spaceService->updateProfessionalRecursively($item, $item->isProfessional(), $entityManager);
+            }
+
             $entityManager->flush();
 
             if ($class === 'space') {
