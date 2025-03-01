@@ -40,7 +40,6 @@
 					<li class='nav-item'>
 						<div class='nav-summary'>
 							<a href='/' class='nav-link collapse-summary {% if app.request.get("_route") == "app_home" %}active{% endif %}'>Home</a>
-
 						</div>
 					</li>
 
@@ -52,7 +51,18 @@
 									<twig:ux:icon name='radix-icons:dots-horizontal'/>
 								</span>
 								<ul class='dropdown-menu' aria-labelledby='#dropdown-space-root' style=''>
-									<li class='open-modal-space dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-space' data-mode='new'>New Space</li>
+									<li class='open-modal-space dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-space' data-mode='new'>
+										<twig:ux:icon name='material-symbols-light:workspaces-outline'/>
+										<span>Add Space</span>
+									</li>
+									<li class='open-modal-space dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-space' data-mode='new'>
+										<twig:ux:icon name='material-symbols-light:archive-outline-rounded'/>
+										<span>Show archived Spaces</span>
+									</li>
+									<li class='dropdown-item'>
+										<twig:ux:icon name='material-symbols-light:settings-outline-rounded'/>
+										<span>Settings</span>
+									</li>
 								</ul>
 							</div>
 						</div>
@@ -69,17 +79,42 @@
 											</button>
 										{% endif %}
 										<a href="{{ path('app_entity_show', { class: space|class_name|lower, id: space.id }) }}" class='nav-link collapse-summary'>
-											{{ space.name }}
+											{% if space.status == 'archived' %}
+												<twig:ux:icon name='material-symbols-light:archive-outline-rounded'/>
+											{% endif %}
+											<span>{{ space.name }}</span>
 										</a>
 										<div class='dropdown'>
 											<span class='dropdown-toggle' id="{{ 'dropdown-space-' ~ space.id }}" data-bs-toggle='dropdown' aria-expanded='false'>
 												<twig:ux:icon name='radix-icons:dots-horizontal'/>
 											</span>
 											<ul class='dropdown-menu' aria-labelledby="{{ '#dropdown-space-' ~ space.id }}" style=''>
-												<li class='open-modal-space dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-space' data-mode='new' data-id="{{ space.id }}">New Child</li>
-												<li class='open-modal-space dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-space' data-mode='edit' data-id="{{ space.id }}">Edit</li>
-												<li>
-													<a href="{{ path('app_entity_delete', { class: space|class_name|lower, id: space.id }) }}" class='dropdown-item' onclick='return confirm("Do you really want to delete this item?");'>Delete</a>
+												{% if space.status == 'open' %}
+													<li class='open-modal-space dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-space' data-mode='new' data-id="{{ space.id }}">
+														<twig:ux:icon name='material-symbols-light:workspaces-outline'/>
+														<span>Add child Space</span>
+													</li>
+													<li class='open-modal-space dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-space' data-mode='edit' data-id="{{ space.id }}">
+														<twig:ux:icon name='material-symbols-light:settings-outline-rounded'/>
+														<span>Settings</span>
+													</li>
+													<li><hr class='dropdown-divider'></li>
+													<li class='dropdown-item archive-space' data-id="{{ space.id }}">
+														<twig:ux:icon name='material-symbols-light:archive-outline-rounded'/>
+														<span>Archive</span>
+													</li>
+												{% endif %}
+												{% if space.status == 'archived' %}
+													<li class='dropdown-item restore-space' data-id="{{ space.id }}">
+														<twig:ux:icon name='mdi-light:refresh'/>
+														<span>Restore</span>
+													</li>
+												{% endif %}
+												<li class='dropdown-item'>
+													<a href="{{ path('app_entity_delete', { class: space|class_name|lower, id: space.id }) }}" class='text-danger' onclick='return confirm("Do you really want to delete this item?");'>
+														<twig:ux:icon name='material-symbols-light:delete-outline-rounded'/>
+														<span>Delete</span>
+													</a>
 												</li>
 											</ul>
 										</div>
@@ -126,24 +161,36 @@
 					</li>
 				</ul>
 			</nav>
+		</aside>
 
-			<twig:Modal id='space' title='New Space'>
-				<twig:block name='body'>
-					{{ form_start(spaceForm, {'attr': {
+		<main>
+			<h1>{{ block('title') }}</h1>
+			{% block body %}{% endblock %}
+		</main>
+
+		<twig:Modal id='space' title='New Space'>
+			<twig:block name='body'>
+				{{ form_start(spaceForm, {'attr': {
 						'id': 'form-space',
 						'data-new-action': path('app_entity_new', {'class': 'space'}),
 						'data-edit-action': path('app_entity_edit', {'class': 'space', 'id': 'PLACEHOLDER'})}
 					}) }}
-					{{ form_widget(spaceForm) }}
-					{{ form_end(spaceForm) }}
-				</twig:block>
+				{{ form_widget(spaceForm) }}
+				{{ form_end(spaceForm) }}
+			</twig:block>
 
-				<twig:block name='footer'>
-					<button type='submit' form='form-space' id='submit-form-space' class='btn btn-primary'>Save</button>
-				</twig:block>
-			</twig:Modal>
-		</body>
+			<twig:block name='footer'>
+				<button type='submit' form='form-space' id='submit-form-space' class='btn btn-primary'>Save</button>
+			</twig:block>
+		</twig:Modal>
+
+		{{ form_start(statusSpaceForm, {'attr': {
+						'id': 'form-space-status',
+						'class': 'd-none',
+						'data-action': path('app_space_status', {'class': 'space', 'id': 'PLACEHOLDER'})}
+					}) }}
+		{{ form_widget(statusSpaceForm) }}
+		{{ form_end(statusSpaceForm) }}
+
 	</body>
-</html></aside><main>
-<h1>{{ block('title') }}</h1>
-{% block body %}{% endblock %}</main></body></html>
+</html>

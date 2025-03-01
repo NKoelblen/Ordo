@@ -59,7 +59,7 @@
 
 				&:has(.nav-title) {
 					// Spacing
-					padding-top: 0.5rem;
+					padding-top: 0;
 				}
 			}
 
@@ -122,9 +122,12 @@
 						display: flex;
 						flex: 1;
 						// Flexbox
-						align-items: end;
+						align-items: center;
+						gap: 0.5rem;
 						// Spacing
 						padding: 0.25rem 0.5rem;
+						// Typography
+						line-height: 1.5rem;
 
 						&:hover,
 						&:focus {
@@ -178,8 +181,22 @@
 							box-shadow: $box-shadow !important;
 
 							.dropdown-item {
+								// Layout
+								display: flex;
+								// Flexbox
+								align-items: center;
+								gap: 0.5rem;
 								// Interactivity
 								cursor: pointer;
+
+								&:first-child {
+									// Spacing
+									padding-top: 0.5rem;
+								}
+								&:last-child {
+									// Spacing
+									padding-bottom: 0.5rem;
+								}
 							}
 						}
 					}
@@ -221,11 +238,16 @@
 						color: $body-tertiary-color-dark;
 					}
 
-					.dropdown-toggle:hover {
-						// Background
-						background: linear-gradient($body-tertiary-bg-dark, $body-tertiary-bg-dark), linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
-						// Border
-						border-radius: 0.25rem;
+					.dropdown .dropdown-toggle {
+						// Effects
+						opacity: 1;
+
+						&:hover {
+							// Background
+							background: linear-gradient($body-tertiary-bg-dark, $body-tertiary-bg-dark), linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+							// Border
+							border-radius: 0.25rem;
+						}
 					}
 				}
 

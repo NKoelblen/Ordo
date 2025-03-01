@@ -28,6 +28,13 @@ class SpaceType extends AbstractType
                 'choice_label' => 'name',
                 'required' => false,
             ])
+            ->add(child: 'accounting', options: [
+                'required' => false,
+            ])
+            ->add(child: 'plannification', options: [
+                'required' => false,
+            ])
+
         ;
     }
 

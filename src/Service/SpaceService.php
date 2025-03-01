@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Space;
 use App\Form\SpaceType;
+use App\Form\StatusSpaceType;
 use App\Repository\SpaceRepository;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -25,5 +26,10 @@ class SpaceService
     public function createSpaceForm()
     {
         return $this->formFactory->create(SpaceType::class);
+    }
+
+    public function createStatusSpaceForm()
+    {
+        return $this->formFactory->create(StatusSpaceType::class);
     }
 }

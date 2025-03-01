@@ -70,6 +70,24 @@ class Space
     #[ORM\ManyToMany(targetEntity: Member::class, mappedBy: 'spaces')]
     private Collection $members;
 
+    #[ORM\Column(options: ['default' => false])]
+    #[Displayable]
+    private ?bool $accounting = null;
+
+    #[ORM\Column(options: ['default' => false])]
+    #[Displayable]
+    private ?bool $plannification = null;
+
+    #[ORM\Column(length: 255, options: ['default' => 'open'])]
+    #[Displayable]
+    private ?string $status = null;
+
+    #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
     public function __construct()
     {
         $this->children = new ArrayCollection();
@@ -310,6 +328,66 @@ class Space
         if ($this->members->removeElement($member)) {
             $member->removeSpace($this);
         }
+
+        return $this;
+    }
+
+    public function isAccounting(): ?bool
+    {
+        return $this->accounting;
+    }
+
+    public function setAccounting(bool $accounting): static
+    {
+        $this->accounting = $accounting;
+
+        return $this;
+    }
+
+    public function isPlannification(): ?bool
+    {
+        return $this->plannification;
+    }
+
+    public function setPlannification(bool $plannification): static
+    {
+        $this->plannification = $plannification;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
