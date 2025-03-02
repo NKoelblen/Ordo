@@ -66,6 +66,13 @@ final class SpaceController extends AbstractController
 
         if ($space) {
             $space->setParent($parent);
+            if ($parent) {
+                $parentStatus = $parent->getStatus();
+                if ($parentStatus === 'archived') {
+                    $this->updateStatusRecursively($space, $parentStatus, $entityManager);
+                }
+                $this->updateProfessionalRecursively($space, $parent->isProfessional(), $entityManager);
+            }
             $space->removeChild($parent);
             $entityManager->flush();
             return new JsonResponse(['status' => 'success']);
@@ -74,6 +81,13 @@ final class SpaceController extends AbstractController
         return new JsonResponse(['status' => 'error'], 400);
     }
 
+    private function updateProfessionalRecursively(Space $space, bool $professional, EntityManagerInterface $entityManager)
+    {
+        $space->setProfessional($professional);
+        foreach ($space->getChildren() as $child) {
+            $this->updateProfessionalRecursively($child, $professional, $entityManager);
+        }
+    }
     private function updateStatusRecursively(Space $space, string $status, EntityManagerInterface $entityManager)
     {
         $space->setStatus($status);

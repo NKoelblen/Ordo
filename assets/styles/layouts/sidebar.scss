@@ -74,7 +74,7 @@
 					// Border
 					border-radius: 0.25rem;
 
-					&:not(:has(.btn-toggle)) .collapse-summary {
+					&:has(.btn-toggle.d-none) .collapse-summary {
 						// Spacing
 						padding-left: 2rem;
 					}

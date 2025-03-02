@@ -73,7 +73,7 @@
 
 								<li class='sortable-item nav-item' data-id="{{ space.id }}">
 									<div class='nav-summary {% if app.request.get("_route") == "app_entity_show" and app.request.get("id") == space.id %}active{% endif %}'>
-										<button class='btn-toggle {% if app.request.get("_route") != "app_entity_show" and app.request.get("id") != space.id %}collapsed{% endif %} {% if children is empty %}d-none{% endif %}' data-bs-toggle='collapse' data-bs-target="{{ '#collapse-space-' ~ space.id }}" aria-expanded='{{ has_show_class ? 'true' : 'false' }}'>
+										<button class='btn-toggle {% if app.request.get("_route") != "app_entity_show" and app.request.get("id") != space.id %}collapsed{% endif %} {% if children is empty %}d-none{% endif %}' data-bs-toggle='collapse' data-bs-target="{{ '#collapse-space-' ~ space.id }}" aria-expanded='{{ has_show_class and children is not empty ? 'true' : 'false' }}'>
 											<twig:ux:icon name='radix-icons:caret-right'/>
 										</button>
 										<a href="{{ path('app_entity_show', { class: space|class_name|lower, id: space.id }) }}" class='sortable-handle nav-link collapse-summary'>
@@ -117,7 +117,7 @@
 											</ul>
 										</div>
 									</div>
-									<div class='collapse {% if has_show_class %}show{% endif %}' id="{{ 'collapse-space-' ~ space.id }}">
+									<div class='collapse {% if has_show_class and children is not empty %}show{% endif %}' id="{{ 'collapse-space-' ~ space.id }}">
 										<ul class='sortable-list navbar-nav btn-toggle-nav' data-controller="sortable" data-sortable-url="{{ path('api_space_hierarchy') }}">
 											{% for child in children %}
 												{{ _self.render_space(child, spaces) }}
