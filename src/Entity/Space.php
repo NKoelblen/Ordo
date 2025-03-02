@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SpaceRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Space
 {
     #[ORM\Id]
@@ -27,6 +28,8 @@ class Space
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
     #[Displayable]
     private ?self $parent = null;
+
+    private ?int $level = null;
 
     /**
      * @var Collection<int, self>
@@ -99,6 +102,20 @@ class Space
         $this->members = new ArrayCollection();
     }
 
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        if ($this->createdAt === null) {
+            $this->createdAt = new \DateTimeImmutable();
+        }
+    }
+
+    #[ORM\PreUpdate]
+    public function setUpdatedAtValue(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -138,6 +155,16 @@ class Space
         $this->parent = $parent;
 
         return $this;
+    }
+
+    public function getLevel(): ?int
+    {
+        return $this->level;
+    }
+
+    public function setLevel(int $level): void
+    {
+        $this->level = $level;
     }
 
     /**

@@ -1,3 +1,4 @@
+const path = require('path');
 const Encore = require('@symfony/webpack-encore');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
@@ -67,6 +68,13 @@ Encore
 	//.enableIntegrityHashes(Encore.isProduction())
 
 	// uncomment if you're having problems with a jQuery plugin
-	.autoProvidejQuery();
+	.autoProvidejQuery()
+
+	.addAliases({
+		'@symfony/stimulus-bridge/controllers.json': path.resolve(__dirname, 'assets/controllers.json'),
+	})
+
+	.enableStimulusBridge('./assets/controllers.json')
+	.enableSingleRuntimeChunk();
 
 module.exports = Encore.getWebpackConfig();

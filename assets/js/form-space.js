@@ -24,6 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
 				.then((response) => response.json())
 				.then((data) => {
 					formSpace.querySelector('#space_name').value = data.name;
+					const options = spaceParentField.options;
+					for (let i = 0; i < options.length; i++) {
+						if (options[i].value == id) {
+							options[i].disabled = true;
+							break;
+						}
+					}
 					spaceParentField.value = data.parent;
 					if (data.parent) {
 						updateProfessionalField(data.parent);

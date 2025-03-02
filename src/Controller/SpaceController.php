@@ -55,6 +55,25 @@ final class SpaceController extends AbstractController
 
         return new JsonResponse($data);
     }
+
+    #[Route('/api/space/hierarchy', name: 'api_space_hierarchy', methods: ['POST'])]
+    public function updateHierarchy(Request $request, SpaceRepository $spaceRepository, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        /** @var Space $space */
+        $space = $spaceRepository->find($data['id']);
+        $parent = $data['parentId'] ? $spaceRepository->find($data['parentId']) : null;
+
+        if ($space) {
+            $space->setParent($parent);
+            $space->removeChild($parent);
+            $entityManager->flush();
+            return new JsonResponse(['status' => 'success']);
+        }
+
+        return new JsonResponse(['status' => 'error'], 400);
+    }
+
     private function updateStatusRecursively(Space $space, string $status, EntityManagerInterface $entityManager)
     {
         $space->setStatus($status);

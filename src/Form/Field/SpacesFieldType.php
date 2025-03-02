@@ -16,6 +16,8 @@ class SpacesFieldType extends AbstractType
             'class' => Space::class,
             'choice_label' => 'name',
             'multiple' => true,
+            'expanded' => true,
+            'required' => false,
         ]);
     }
     public function getParent(): string

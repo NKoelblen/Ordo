@@ -66,12 +66,12 @@
 								</ul>
 							</div>
 						</div>
-						<ul class='btn-toggle-nav navbar-nav root-items'>
+						<ul id="space-list" class='sortable-list btn-toggle-nav navbar-nav root-items' data-controller="sortable" data-sortable-url="{{ path('api_space_hierarchy') }}">
 							{% macro render_space(space, spaces) %}
 								{% set has_show_class = _self.has_show_class(space, spaces)|spaceless %}
 								{% set children = spaces|filter(s => s.parent and s.parent.id == space.id) %}
 
-								<li class='nav-item'>
+								<li class='sortable-item nav-item' data-id="{{ space.id }}">
 									<div class='nav-summary {% if app.request.get("_route") == "app_entity_show" and app.request.get("id") == space.id %}active{% endif %}'>
 										{% if children is not empty %}
 											<button class='btn-toggle {% if app.request.get("_route") != "app_entity_show" and app.request.get("id") != space.id %}collapsed{% endif %}' data-bs-toggle='collapse' data-bs-target="{{ '#collapse-space-' ~ space.id }}" aria-expanded='{{ has_show_class ? 'true' : 'false' }}'>
@@ -120,15 +120,15 @@
 										</div>
 									</div>
 
-									{% if children is not empty %}
+									{# {% if children is not empty %} #}
 										<div class='collapse {% if has_show_class %}show{% endif %}' id="{{ 'collapse-space-' ~ space.id }}">
-											<ul class='navbar-nav btn-toggle-nav'>
+											<ul class='sortable-list navbar-nav btn-toggle-nav' data-controller="sortable" data-sortable-url="{{ path('api_space_hierarchy') }}">
 												{% for child in children %}
 													{{ _self.render_space(child, spaces) }}
 												{% endfor %}
 											</ul>
 										</div>
-									{% endif %}
+									{# {% endif %} #}
 								</li>
 							{% endmacro %}
 
