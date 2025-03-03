@@ -73,14 +73,6 @@ class Space
     #[ORM\ManyToMany(targetEntity: Member::class, mappedBy: 'spaces')]
     private Collection $members;
 
-    #[ORM\Column(options: ['default' => false])]
-    #[Displayable]
-    private ?bool $accounting = null;
-
-    #[ORM\Column(options: ['default' => false])]
-    #[Displayable]
-    private ?bool $plannification = null;
-
     #[ORM\Column(length: 255, options: ['default' => 'open'])]
     #[Displayable]
     private ?string $status = null;
@@ -355,30 +347,6 @@ class Space
         if ($this->members->removeElement($member)) {
             $member->removeSpace($this);
         }
-
-        return $this;
-    }
-
-    public function isAccounting(): ?bool
-    {
-        return $this->accounting;
-    }
-
-    public function setAccounting(bool $accounting): static
-    {
-        $this->accounting = $accounting;
-
-        return $this;
-    }
-
-    public function isPlannification(): ?bool
-    {
-        return $this->plannification;
-    }
-
-    public function setPlannification(bool $plannification): static
-    {
-        $this->plannification = $plannification;
 
         return $this;
     }

@@ -19,12 +19,15 @@ class SpaceRepository extends ServiceEntityRepository
     public function getHierarchy(?Space $parent = null): array
     {
         $qb = $this->createQueryBuilder('s')
-            ->where('s.parent IS NULL')
+            ->where('s.status = :status')
+            ->setParameter('status', 'open')
             ->orderBy('s.name', 'ASC');
 
         if ($parent) {
-            $qb->where('s.parent = :parent')
+            $qb->andwhere('s.parent = :parent')
                 ->setParameter('parent', $parent);
+        } else {
+            $qb->andwhere('s.parent IS NULL');
         }
 
         $spaces = $qb->getQuery()->getResult();
@@ -39,13 +42,15 @@ class SpaceRepository extends ServiceEntityRepository
     public function getHierarchyChoices(?Space $parent = null, int $level = 0, array &$result = []): array
     {
         $qb = $this->createQueryBuilder('s')
+            ->where('s.status = :status')
+            ->setParameter('status', 'open')
             ->orderBy('s.name', 'ASC');
 
-        if ($parent === null) {
-            $qb->where('s.parent IS NULL');
-        } else {
-            $qb->where('s.parent = :parent')
+        if ($parent) {
+            $qb->andwhere('s.parent = :parent')
                 ->setParameter('parent', $parent);
+        } else {
+            $qb->andwhere('s.parent IS NULL');
         }
 
         $spaces = $qb->getQuery()->getResult();
@@ -62,7 +67,9 @@ class SpaceRepository extends ServiceEntityRepository
     private function getChildrenChoices(Space $parent, int $level, array &$result): void
     {
         $children = $this->createQueryBuilder('s')
-            ->where('s.parent = :parent')
+            ->where('s.status = :status')
+            ->setParameter('status', 'open')
+            ->andwhere('s.parent = :parent')
             ->setParameter('parent', $parent)
             ->orderBy('s.name', 'ASC')
             ->getQuery()

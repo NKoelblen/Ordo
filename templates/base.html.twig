@@ -55,7 +55,7 @@
 										<twig:ux:icon name='material-symbols-light:workspaces-outline'/>
 										<span>Add Space</span>
 									</li>
-									<li class='open-modal-space dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-space' data-mode='new'>
+									<li id="show-archived-spaces" class='open-modal-space dropdown-item'>
 										<twig:ux:icon name='material-symbols-light:archive-outline-rounded'/>
 										<span>Show archived Spaces</span>
 									</li>
@@ -71,7 +71,7 @@
 								{% set has_show_class = _self.has_show_class(space, spaces)|spaceless %}
 								{% set children = spaces|filter(s => s.parent and s.parent.id == space.id) %}
 
-								<li class='sortable-item nav-item' data-id="{{ space.id }}">
+								<li class='sortable-item nav-item {% if space.status == 'archived' %}archived-space d-none{% endif %}' data-id="{{ space.id }}">
 									<div class='nav-summary {% if app.request.get("_route") == "app_entity_show" and app.request.get("id") == space.id %}active{% endif %}'>
 										<button class='btn-toggle {% if app.request.get("_route") != "app_entity_show" and app.request.get("id") != space.id %}collapsed{% endif %} {% if children is empty %}d-none{% endif %}' data-bs-toggle='collapse' data-bs-target="{{ '#collapse-space-' ~ space.id }}" aria-expanded='{{ has_show_class and children is not empty ? 'true' : 'false' }}'>
 											<twig:ux:icon name='radix-icons:caret-right'/>

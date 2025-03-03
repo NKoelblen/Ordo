@@ -25,6 +25,8 @@ class Category
     #[Displayable]
     private ?self $parent = null;
 
+    private ?int $level = null;
+
     /**
      * @var Collection<int, self>
      */
@@ -102,6 +104,16 @@ class Category
         $this->parent = $parent;
 
         return $this;
+    }
+
+    public function getLevel(): ?int
+    {
+        return $this->level;
+    }
+
+    public function setLevel(int $level): void
+    {
+        $this->level = $level;
     }
 
     /**

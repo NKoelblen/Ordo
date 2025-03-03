@@ -38,12 +38,6 @@ class SpaceType extends AbstractType
                 },
                 'required' => false,
             ])
-            ->add(child: 'accounting', options: [
-                'required' => false,
-            ])
-            ->add(child: 'plannification', options: [
-                'required' => false,
-            ])
             ->add('status', HiddenType::class, [
                 'data' => 'open'
             ])

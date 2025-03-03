@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Category;
 use App\Form\Field\CategoryFieldType;
 use App\Form\Field\SpacesFieldType;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -13,6 +14,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CategoryType extends AbstractType
 {
+    public function __construct(private CategoryRepository $categoryRepository)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $currentCategory = $options['current_item'];
@@ -21,16 +26,11 @@ class CategoryType extends AbstractType
             ->add('name')
             ->add('parent', EntityType::class, [
                 'class' => Category::class,
-                'choice_label' => 'name',
-                'required' => false,
-                'query_builder' => function (EntityRepository $er) use ($currentCategory) {
-                    $qb = $er->createQueryBuilder('s');
-                    if ($currentCategory) {
-                        $qb->where('s.id != :currentSpace')
-                            ->setParameter('currentSpace', $currentCategory->getId());
-                    }
-                    return $qb;
+                'choices' => $this->categoryRepository->getHierarchyChoices(),
+                'choice_label' => function (Category $category) {
+                    return str_repeat('—', $category->getLevel()) . ' ' . $category->getName();
                 },
+                'required' => false,
             ])
             ->add('spaces', SpacesFieldType::class, )
         ;
@@ -40,7 +40,6 @@ class CategoryType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Category::class,
-            'current_item' => null,
         ]);
     }
 }

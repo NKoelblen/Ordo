@@ -107,9 +107,7 @@ final class EntityController extends AbstractController
         }
 
         $formTypeClass = "App\\Form\\" . ucfirst($class) . "Type";
-        $form = $formFactory->createBuilder($formTypeClass, $item, [
-            'current_item' => $item,
-        ])->getForm();
+        $form = $formFactory->createBuilder($formTypeClass, $item)->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

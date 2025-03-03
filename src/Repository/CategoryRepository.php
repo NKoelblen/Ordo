@@ -16,6 +16,64 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+    public function getHierarchy(?Category $parent = null): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->where('c.parent IS NULL')
+            ->orderBy('c.name', 'ASC');
+
+        if ($parent) {
+            $qb->where('c.parent = :parent')
+                ->setParameter('parent', $parent);
+        }
+
+        $categories = $qb->getQuery()->getResult();
+
+        foreach ($categories as $category) {
+            $category->children = $this->getHierarchy($category);
+        }
+
+        return $categories;
+    }
+
+    public function getHierarchyChoices(?Category $parent = null, int $level = 0, array &$result = []): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->orderBy('c.name', 'ASC');
+
+        if ($parent === null) {
+            $qb->where('c.parent IS NULL');
+        } else {
+            $qb->where('c.parent = :parent')
+                ->setParameter('parent', $parent);
+        }
+
+        $categories = $qb->getQuery()->getResult();
+
+        foreach ($categories as $category) {
+            $category->setLevel($level); // Ajout d'un niveau pour l'affichage
+            $result[] = $category;
+            $this->getHierarchyChoices($category, $level + 1, $result);
+        }
+
+        return $result;
+    }
+
+    private function getChildrenChoices(Category $parent, int $level, array &$result): void
+    {
+        $children = $this->createQueryBuilder('c')
+            ->where('c.parent = :parent')
+            ->setParameter('parent', $parent)
+            ->orderBy('c.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        foreach ($children as $child) {
+            $result[$child->getId()] = str_repeat('–', $level) . ' ' . $child->getName();
+            $this->getChildrenChoices($child, $level + 1, $result);
+        }
+    }
+
     //    /**
     //     * @return Category[] Returns an array of Category objects
     //     */
