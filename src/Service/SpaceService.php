@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Space;
+use App\Form\RenameSpaceType;
 use App\Form\SpaceType;
 use App\Form\StatusSpaceType;
 use App\Repository\SpaceRepository;
@@ -26,12 +27,22 @@ class SpaceService
 
     public function createSpaceForm()
     {
-        return $this->formFactory->create(SpaceType::class);
+        return $this->formFactory->create(SpaceType::class)->createView();
     }
 
     public function createStatusSpaceForm()
     {
-        return $this->formFactory->create(StatusSpaceType::class);
+        return $this->formFactory->create(StatusSpaceType::class)->createView();
+    }
+
+    public function createRenameSpaceForms()
+    {
+        $spaces = $this->getSpaces();
+        $forms = [];
+        foreach ($spaces as $space) {
+            $forms[$space->getId()] = $this->formFactory->create(RenameSpaceType::class)->createView();
+        }
+        return $forms;
     }
 
     public function updateProfessionalRecursively(Space $space, bool $professional, EntityManagerInterface $entityManager)

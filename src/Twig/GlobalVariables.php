@@ -20,8 +20,9 @@ class GlobalVariables extends AbstractExtension implements GlobalsInterface
         return [
             'entities' => $this->entityService->getEntities(),
             'spaces' => $this->spaceService->getSpaces(),
-            'spaceForm' => $this->spaceService->createSpaceForm()->createView(),
-            'statusSpaceForm' => $this->spaceService->createStatusSpaceForm()->createView(),
+            'spaceForm' => $this->spaceService->createSpaceForm(),
+            'statusSpaceForm' => $this->spaceService->createStatusSpaceForm(),
+            'renameSpaceForms' => $this->spaceService->createRenameSpaceForms(),
         ];
     }
 }

@@ -74,9 +74,15 @@
 					// Border
 					border-radius: 0.25rem;
 
-					&:has(.btn-toggle.d-none) .collapse-summary {
-						// Spacing
-						padding-left: 2rem;
+					&:has(.btn-toggle.d-none) {
+						.collapse-summary {
+							// Spacing
+							padding-left: 2rem;
+						}
+						.form-space-rename {
+							// Spacing
+							padding-left: 24px;
+						}
 					}
 
 					.btn-toggle {
@@ -133,6 +139,18 @@
 						&:focus {
 							// Background
 							background-color: rgba(0, 0, 0, 0.1);
+						}
+					}
+
+					.form-space-rename {
+						// Flexbox
+						flex: 1;
+
+						input {
+							// Sizing
+							height: 2rem;
+							// Spacing
+							padding: 4px 7px 6px;
 						}
 					}
 
@@ -253,7 +271,7 @@
 
 				.collapse,
 				.collapsing {
-					&:not(:has(.show)) .navbar-nav {
+					&:not(:has(.collapse.show)) .navbar-nav {
 						// Spacing
 						margin-bottom: 0.5rem;
 					}
@@ -261,9 +279,6 @@
 						// Spacing
 						padding-left: 1.5rem;
 					}
-				}
-
-				.nav-link {
 				}
 			}
 		}

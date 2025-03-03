@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Space;
+use App\Form\RenameSpaceType;
 use App\Form\StatusSpaceType;
 use App\Repository\SpaceRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,19 +21,35 @@ final class SpaceController extends AbstractController
     ) {
     }
 
-    #[Route('/space/{id}/status', name: 'app_space_status', methods: ['POST'])]
-    public function edit(int $id, Request $request, EntityManagerInterface $entityManager, FormFactoryInterface $formFactory): ?Response
+    #[Route('/space/{id}/rename', name: 'app_space_rename', methods: ['POST'])]
+    public function rename(int $id, Request $request, EntityManagerInterface $entityManager, FormFactoryInterface $formFactory): ?Response
     {
-        $item = $this->spaceRepository->find($id);
-        if (!$item) {
-            throw $this->createNotFoundException("Aucun enregistrement trouvé.");
-        }
-
-        $form = $formFactory->create(StatusSpaceType::class, $item);
+        $space = $this->spaceRepository->find($id);
+        $form = $formFactory->create(RenameSpaceType::class, $space);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->updateStatusRecursively($item, $item->getStatus(), $entityManager);
+            $entityManager->flush();
+
+            return $this->redirect($request->headers->get('referer'));
+        }
+
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    #[Route('/space/{id}/status', name: 'app_space_status', methods: ['POST'])]
+    public function updateStatus(int $id, Request $request, EntityManagerInterface $entityManager, FormFactoryInterface $formFactory): ?Response
+    {
+        $space = $this->spaceRepository->find($id);
+        if (!$space) {
+            throw $this->createNotFoundException("Aucun enregistrement trouvé.");
+        }
+
+        $form = $formFactory->create(StatusSpaceType::class, $space);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->updateStatusRecursively($space, $space->getStatus(), $entityManager);
             $entityManager->flush();
 
             return $this->redirect($request->headers->get('referer'));

@@ -72,16 +72,37 @@
 								{% set children = spaces|filter(s => s.parent and s.parent.id == space.id) %}
 
 								<li class='sortable-item nav-item {% if space.status == 'archived' %}archived-space d-none{% endif %}' data-id="{{ space.id }}">
-									<div class='nav-summary {% if app.request.get("_route") == "app_entity_show" and app.request.get("id") == space.id %}active{% endif %}'>
-										<button class='btn-toggle {% if app.request.get("_route") != "app_entity_show" and app.request.get("id") != space.id %}collapsed{% endif %} {% if children is empty %}d-none{% endif %}' data-bs-toggle='collapse' data-bs-target="{{ '#collapse-space-' ~ space.id }}" aria-expanded='{{ has_show_class and children is not empty ? 'true' : 'false' }}'>
+									<div
+										class='nav-summary {% if app.request.get("_route") == "app_entity_show" and app.request.get("id") == space.id %}active{% endif %}'
+										data-controller="rename"
+										>
+										<button
+											class='btn-toggle {% if app.request.get("_route") != "app_entity_show" and app.request.get("id") != space.id %}collapsed{% endif %} {% if children is empty %}d-none{% endif %}'
+											data-bs-toggle='collapse'
+											data-bs-target="{{ '#collapse-space-' ~ space.id }}"
+											aria-expanded='{{ has_show_class and children is not empty ? 'true' : 'false' }}'
+										>
 											<twig:ux:icon name='radix-icons:caret-right'/>
 										</button>
-										<a href="{{ path('app_entity_show', { class: space|class_name|lower, id: space.id }) }}" class='sortable-handle nav-link collapse-summary'>
+										<a
+											href="{{ path('app_entity_show', { class: space|class_name|lower, id: space.id }) }}"
+											class='sortable-handle collapse-summary nav-link'
+											data-rename-target="text"
+										>
 											{% if space.status == 'archived' %}
 												<twig:ux:icon name='material-symbols-light:archive-outline-rounded'/>
 											{% endif %}
 											<span>{{ space.name }}</span>
 										</a>
+										{{ form_start(renameSpaceForms[space.id], {
+											'action': path('app_space_rename', {id: space.id}),
+											'attr': {
+												'data-turbo': 'false',
+												'data-rename-target': 'form',
+												'class': 'form-space-rename d-none'
+											}}) }}
+										    {{ form_widget(renameSpaceForms[space.id].name, {'attr': {'data-rename-target': 'input', 'data-initial-value': space.name}}) }}
+										{{ form_end(renameSpaceForms[space.id]) }}
 										<div class='dropdown'>
 											<span class='dropdown-toggle' id="{{ 'dropdown-space-' ~ space.id }}" data-bs-toggle='dropdown' aria-expanded='false'>
 												<twig:ux:icon name='radix-icons:dots-horizontal'/>
@@ -91,6 +112,10 @@
 													<li class='open-modal-space dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-space' data-mode='new' data-id="{{ space.id }}">
 														<twig:ux:icon name='material-symbols-light:workspaces-outline'/>
 														<span>Add child Space</span>
+													</li>
+													<li class='dropdown-item' data-action="click->rename#edit">
+														<twig:ux:icon name="material-symbols-light:edit-outline-rounded" />
+														<span>Rename</span>
 													</li>
 													<li class='open-modal-space dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-space' data-mode='edit' data-id="{{ space.id }}">
 														<twig:ux:icon name='material-symbols-light:settings-outline-rounded'/>
