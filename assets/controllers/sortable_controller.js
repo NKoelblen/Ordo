@@ -10,15 +10,14 @@ export default class extends Controller {
 	}
 
 	initSortable() {
-		// Sélectionne tous les éléments imbriqués avec la classe correspondante
 		const nestedSortables = this.element.querySelectorAll('.sortable-list');
 
 		nestedSortables.forEach((list) => {
 			new Sortable(list, {
 				group: {
 					name: 'nested',
-					pull: true, // Permet de déplacer entre listes
-					put: true, // Autorise l'insertion d'éléments dans une autre liste
+					pull: true,
+					put: true,
 				},
 				handle: '.sortable-handle',
 				animation: 150,

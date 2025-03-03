@@ -7,4 +7,3 @@ export const app = startStimulusApp(require.context('@symfony/stimulus-bridge/la
 // register any custom, 3rd party controllers here
 app.register('sortable', SortableController);
 app.register('rename', RenameController);
-// export { app };

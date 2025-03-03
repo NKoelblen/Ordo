@@ -2,11 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	const showArchivedSpacesButton = document.querySelector('#show-archived-spaces');
 	const archivedSpaces = document.querySelectorAll('.archived-space');
 
-	// Récupérer l'état initial du localStorage
 	const showArchived = localStorage.getItem('showArchivedSpaces') === 'true';
-	console.log(localStorage.getItem('showArchivedSpaces'));
 
-	// Appliquer l'état initial
 	if (showArchived) {
 		archivedSpaces.forEach((space) => space.classList.remove('d-none'));
 		showArchivedSpacesButton.querySelector('span').textContent = 'Hidde Archived Spaces';

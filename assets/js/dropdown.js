@@ -13,10 +13,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			const menuRect = menu.getBoundingClientRect();
 			if (menuRect.right > window.innerWidth) {
-				menu.style.left = `${window.innerWidth - menuRect.width - 10}px`; // Adjust to the left
+				menu.style.left = `${window.innerWidth - menuRect.width - 10}px`;
 			}
 			if (menuRect.bottom > window.innerHeight) {
-				menu.style.top = `${rect.top + scrollTop - menuRect.height}px`; // Adjust to the top
+				menu.style.top = `${rect.top + scrollTop - menuRect.height}px`;
 			}
 		}
 

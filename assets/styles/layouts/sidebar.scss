@@ -188,6 +188,13 @@
 							}
 						}
 
+						&:has(.show) .dropdown-toggle {
+							// Effects
+							opacity: 1;
+							// Animation
+							transition: opacity 0.35s ease;
+						}
+
 						.dropdown-menu {
 							// Layout
 							position: fixed;
