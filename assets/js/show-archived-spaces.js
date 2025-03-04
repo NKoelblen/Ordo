@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbo:load', function () {
 	const showArchivedSpacesButton = document.querySelector('#show-archived-spaces');
 	const archivedSpaces = document.querySelectorAll('.archived-space');
 

@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('turbo:load', function () {
 	const dropdowns = document.querySelectorAll('.dropdown');
 	dropdowns.forEach((dropdown) => {
 		const toggle = dropdown.querySelector('.dropdown-toggle');
@@ -22,9 +22,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		toggle.addEventListener('click', updateDropdownPosition);
 
-		window.addEventListener('resize', updateDropdownPosition());
+		window.addEventListener('resize', updateDropdownPosition);
 
-		window.addEventListener('scroll', updateDropdownPosition());
+		window.addEventListener('scroll', updateDropdownPosition);
 
 		const scrollableAncestors = [];
 		let parent = dropdown.parentNode;

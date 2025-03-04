@@ -10,8 +10,9 @@ import 'bootstrap';
 import './styles/app.scss';
 
 import './js/dropdown.js';
-import './js/show-archived-spaces.js';
-import './js/form-status-space.js';
 import './js/form-space.js';
+import './js/form-status-space.js';
+import './js/form-professional-space.js';
+import './js/show-archived-spaces.js';
 
 import './bootstrap.js';

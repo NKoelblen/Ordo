@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Space;
+use App\Form\ProfessionalSpaceType;
 use App\Form\RenameSpaceType;
 use App\Form\StatusSpaceType;
 use App\Repository\SpaceRepository;
@@ -25,10 +26,34 @@ final class SpaceController extends AbstractController
     public function rename(int $id, Request $request, EntityManagerInterface $entityManager, FormFactoryInterface $formFactory): ?Response
     {
         $space = $this->spaceRepository->find($id);
+        if (!$space) {
+            throw $this->createNotFoundException("Aucun enregistrement trouvé.");
+        }
         $form = $formFactory->create(RenameSpaceType::class, $space);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->updateProfessionalRecursively($space, $space->isProfessional(), $entityManager);
+            $entityManager->flush();
+
+            return $this->redirect($request->headers->get('referer'));
+        }
+
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    #[Route('/space/{id}/professional', name: 'app_space_professional', methods: ['POST'])]
+    public function updateProfessional(int $id, Request $request, EntityManagerInterface $entityManager, FormFactoryInterface $formFactory): ?Response
+    {
+        $space = $this->spaceRepository->find($id);
+        if (!$space) {
+            throw $this->createNotFoundException("Aucun enregistrement trouvé.");
+        }
+        $form = $formFactory->create(ProfessionalSpaceType::class, $space);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->updateProfessionalRecursively($space, $space->isProfessional(), $entityManager);
             $entityManager->flush();
 
             return $this->redirect($request->headers->get('referer'));

@@ -117,6 +117,11 @@
 														<twig:ux:icon name="material-symbols-light:edit-outline-rounded" />
 														<span>Rename</span>
 													</li>
+													<li class='dropdown-item'>
+														{{ form_start(professionalSpaceForms[space.id], {'action': path('app_space_professional', {id: space.id}), 'attr': {'class': 'form-space-professional'}}) }}
+															{{ form_widget(professionalSpaceForms[space.id].professional, {'attr': {'disabled': space.parent != null ? true : false}}) }}
+														{{ form_end(professionalSpaceForms[space.id]) }}
+													</li>
 													<li class='open-modal-space dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-space' data-mode='edit' data-id="{{ space.id }}">
 														<twig:ux:icon name='material-symbols-light:settings-outline-rounded'/>
 														<span>Settings</span>

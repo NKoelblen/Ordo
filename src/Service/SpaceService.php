@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Space;
+use App\Form\ProfessionalSpaceType;
 use App\Form\RenameSpaceType;
 use App\Form\SpaceType;
 use App\Form\StatusSpaceType;
@@ -40,7 +41,17 @@ class SpaceService
         $spaces = $this->getSpaces();
         $forms = [];
         foreach ($spaces as $space) {
-            $forms[$space->getId()] = $this->formFactory->create(RenameSpaceType::class)->createView();
+            $forms[$space->getId()] = $this->formFactory->create(RenameSpaceType::class, $space)->createView();
+        }
+        return $forms;
+    }
+
+    public function createProfessionalSpaceForms()
+    {
+        $spaces = $this->getSpaces();
+        $forms = [];
+        foreach ($spaces as $space) {
+            $forms[$space->getId()] = $this->formFactory->create(ProfessionalSpaceType::class, $space)->createView();
         }
         return $forms;
     }
