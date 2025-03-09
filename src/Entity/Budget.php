@@ -52,9 +52,28 @@ class Budget
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\Column(options: ['default' => false])]
+    #[Displayable]
+    private bool $recurrent = false;
+
+    #[ORM\Column(nullable: true)]
+    #[Displayable]
+    private ?int $endMonth = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Displayable]
+    private ?int $endYear = null;
+
+    /**
+     * @var Collection<int, BudgetException>
+     */
+    #[ORM\OneToMany(targetEntity: BudgetException::class, mappedBy: 'budget')]
+    private Collection $budgetExceptions;
+
     public function __construct()
     {
         $this->spaces = new ArrayCollection();
+        $this->budgetExceptions = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -180,6 +199,72 @@ class Budget
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function isRecurrent(): ?bool
+    {
+        return $this->recurrent;
+    }
+
+    public function setRecurrent(bool $recurrent): static
+    {
+        $this->recurrent = $recurrent;
+
+        return $this;
+    }
+
+    public function getEndMonth(): ?int
+    {
+        return $this->endMonth;
+    }
+
+    public function setEndMonth(?int $endMonth): static
+    {
+        $this->endMonth = $endMonth;
+
+        return $this;
+    }
+
+    public function getEndYear(): ?int
+    {
+        return $this->endYear;
+    }
+
+    public function setEndYear(?int $endYear): static
+    {
+        $this->endYear = $endYear;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BudgetExceptions>
+     */
+    public function getBudgetExceptions(): Collection
+    {
+        return $this->budgetExceptions;
+    }
+
+    public function addBudgetException(BudgetExceptions $budgetException): static
+    {
+        if (!$this->budgetExceptions->contains($budgetException)) {
+            $this->budgetExceptions->add($budgetException);
+            $budgetException->setBudget($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBudgetException(BudgetExceptions $budgetException): static
+    {
+        if ($this->budgetExceptions->removeElement($budgetException)) {
+            // set the owning side to null (unless already changed)
+            if ($budgetException->getBudget() === $this) {
+                $budgetException->setBudget(null);
+            }
+        }
 
         return $this;
     }

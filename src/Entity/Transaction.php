@@ -71,10 +71,25 @@ class Transaction
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\Column(options: ['default' => false])]
+    #[Displayable]
+    private bool $recurrent = false;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[Displayable]
+    private ?\DateTimeInterface $endDate = null;
+
+    /**
+     * @var Collection<int, TransactionException>
+     */
+    #[ORM\OneToMany(targetEntity: TransactionException::class, mappedBy: 'transaction')]
+    private Collection $transactionExceptions;
+
     public function __construct()
     {
         $this->spaces = new ArrayCollection();
         $this->details = new ArrayCollection();
+        $this->transactionExceptions = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -266,6 +281,60 @@ class Transaction
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function isRecurrent(): ?bool
+    {
+        return $this->recurrent;
+    }
+
+    public function setRecurrent(bool $recurrent): static
+    {
+        $this->recurrent = $recurrent;
+
+        return $this;
+    }
+
+    public function getEndDate(): ?\DateTimeInterface
+    {
+        return $this->endDate;
+    }
+
+    public function setEndDate(?\DateTimeInterface $endDate): static
+    {
+        $this->endDate = $endDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TransactionException>
+     */
+    public function getTransactionExceptions(): Collection
+    {
+        return $this->transactionExceptions;
+    }
+
+    public function addTransactionException(TransactionException $transactionException): static
+    {
+        if (!$this->transactionExceptions->contains($transactionException)) {
+            $this->transactionExceptions->add($transactionException);
+            $transactionException->setTransaction($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransactionException(TransactionException $transactionException): static
+    {
+        if ($this->transactionExceptions->removeElement($transactionException)) {
+            // set the owning side to null (unless already changed)
+            if ($transactionException->getTransaction() === $this) {
+                $transactionException->setTransaction(null);
+            }
+        }
 
         return $this;
     }
