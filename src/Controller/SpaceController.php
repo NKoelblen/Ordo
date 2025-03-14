@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Space;
+use App\Form\AccountingSpaceType;
 use App\Form\ProfessionalSpaceType;
 use App\Form\RenameSpaceType;
 use App\Form\StatusSpaceType;
@@ -79,6 +80,25 @@ final class SpaceController extends AbstractController
 
             return $this->redirect($request->headers->get('referer'));
         }
+    }
+
+    #[Route('/space/{id}/accounting', name: 'app_space_accounting', methods: ['POST'])]
+    public function updateAccounting(int $id, Request $request, EntityManagerInterface $entityManager, FormFactoryInterface $formFactory): ?Response
+    {
+        $space = $this->spaceRepository->find($id);
+        if (!$space) {
+            throw $this->createNotFoundException("Aucun enregistrement trouvé.");
+        }
+        $form = $formFactory->create(AccountingSpaceType::class, $space);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirect($request->headers->get('referer'));
+        }
+
+        return $this->redirect($request->headers->get('referer'));
     }
 
     #[Route('/api/space/{id}', name: 'api_space_get', methods: ['GET'])]

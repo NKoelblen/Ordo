@@ -83,6 +83,10 @@ class Space
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\Column(options: ['default' => 'false'])]
+    #[Displayable]
+    private bool $accounting = false;
+
     public function __construct()
     {
         $this->children = new ArrayCollection();
@@ -383,6 +387,18 @@ class Space
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function hasAccounting(): bool
+    {
+        return $this->accounting;
+    }
+
+    public function setAccounting(bool $accounting): static
+    {
+        $this->accounting = $accounting;
 
         return $this;
     }

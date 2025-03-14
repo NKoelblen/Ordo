@@ -2,6 +2,8 @@
 
 namespace App\Twig;
 
+use App\Service\AccountService;
+use App\Service\BudgetService;
 use App\Service\EntityService;
 use App\Service\SpaceService;
 use Twig\Extension\AbstractExtension;
@@ -11,7 +13,9 @@ class GlobalVariables extends AbstractExtension implements GlobalsInterface
 {
     public function __construct(
         private EntityService $entityService,
-        private SpaceService $spaceService
+        private SpaceService $spaceService,
+        private AccountService $accountService,
+        private BudgetService $budgetService
     ) {
     }
 
@@ -24,6 +28,9 @@ class GlobalVariables extends AbstractExtension implements GlobalsInterface
             'renameSpaceForms' => $this->spaceService->createRenameSpaceForms(),
             'statusSpaceForm' => $this->spaceService->createStatusSpaceForm(),
             'professionalSpaceForms' => $this->spaceService->createProfessionalSpaceForms(),
+            'accountingSpaceForms' => $this->spaceService->createAccountingSpaceForms(),
+            'accountForm' => $this->accountService->createAccountForm(),
+            'budgetForm' => $this->budgetService->createBudgetForm()
         ];
     }
 }

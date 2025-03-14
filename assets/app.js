@@ -13,6 +13,9 @@ import './js/dropdown.js';
 import './js/form-space.js';
 import './js/form-status-space.js';
 import './js/form-professional-space.js';
+import './js/form-accounting-space.js';
+import './js/form-account.js';
+import './js/form-budget.js';
 import './js/show-archived-spaces.js';
 
 import './bootstrap.js';

@@ -1,0 +1,138 @@
+{% set has_show_class = _self.has_show_class(space, spaces)|spaceless %}
+{% set children = spaces|filter(s => s.parent and s.parent.id == space.id) %}
+
+<li class='sortable-item nav-item {% if space.status == 'archived' %}archived-space d-none{% endif %}' data-id="{{ space.id }}">
+	<div
+		class='nav-summary {% if app.request.get("_route") == "app_entity_show" and app.request.get("id") == space.id %}active{% endif %}'
+		data-controller="rename"
+		>
+		<button
+			class='btn-toggle {% if app.request.get("_route") != "app_entity_show" and app.request.get("id") != space.id %}collapsed{% endif %} {% if children is empty and space.accounts is empty and space.budgets is empty %}d-none{% endif %}'
+			data-bs-toggle='collapse'
+			data-bs-target="{{ '#collapse-space-' ~ space.id }}"
+			aria-expanded='{{ has_show_class and children is not empty ? 'true' : 'false' }}'
+		>
+			<twig:ux:icon name='radix-icons:caret-right'/>
+		</button>
+		<a
+			href="{{ path('app_entity_show', { class: space|class_name|lower, id: space.id }) }}"
+			class='sortable-handle collapse-summary nav-link'
+			data-rename-target="text"
+		>
+			{% if space.status == 'archived' %}
+				<twig:ux:icon name='material-symbols-light:archive-outline-rounded'/>
+			{% endif %}
+			<span>{{ space.name }}</span>
+		</a>
+		{{ form_start(renameSpaceForms[space.id], {
+			'action': path('app_space_rename', {id: space.id}),
+			'attr': {
+				'data-turbo': 'false',
+				'data-rename-target': 'form',
+				'class': 'form-space-rename d-none'
+			}}) }}
+		    {{ form_widget(renameSpaceForms[space.id].name, {'attr': {'data-rename-target': 'input', 'data-initial-value': space.name}}) }}
+		{{ form_end(renameSpaceForms[space.id]) }}
+		<twig:Dropdown dropdownToggleId="{{ 'space-' ~ space.id }}">
+			<twig:block name='items'>
+				{% if space.status == 'open' %}
+					<li class='dropdown-item'>
+						<twig:ux:icon name="material-symbols-light:euro-rounded" />
+						<span>Accounting</span>
+						<twig:Dropdown dropdownToggleId="{{ 'accounting-' ~ space.id }}" submenu="true">
+							<twig:block name='items'>
+								<li class='open-modal-account dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-account' data-mode='new' data-id="{{ space.id }}">
+									<twig:ux:icon name="material-symbols-light:account-balance-outline-rounded" />
+									<span>Add account</span>
+								</li>
+								<li class='open-modal-budget dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-budget' data-mode='new' data-id="{{ space.id }}">
+									<twig:ux:icon name="mdi-light:chart-pie" />
+									<span>Add budget</span>
+								</li>
+							</twig:block>
+						</twig:Dropdown>
+					</li>
+					<li class='open-modal-space dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-space' data-mode='new' data-id="{{ space.id }}">
+						<twig:ux:icon name='material-symbols-light:workspaces-outline'/>
+						<span>Add child Space</span>
+					</li>
+					<li class='dropdown-item' data-action="click->rename#edit">
+						<twig:ux:icon name="material-symbols-light:edit-outline-rounded" />
+						<span>Rename</span>
+					</li>
+					<li class='dropdown-item'>
+						{{ form_start(professionalSpaceForms[space.id], {'action': path('app_space_professional', {id: space.id}), 'attr': {'class': 'form-space-professional'}}) }}
+							{{ form_widget(professionalSpaceForms[space.id].professional, {'attr': {'disabled': space.parent != null ? true : false}}) }}
+						{{ form_end(professionalSpaceForms[space.id]) }}
+					</li>
+					<li class='open-modal-space dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-space' data-mode='edit' data-id="{{ space.id }}">
+						<twig:ux:icon name='material-symbols-light:settings-outline-rounded'/>
+						<span>Settings</span>
+					</li>
+					<li><hr class='dropdown-divider'></li>
+					<li class='dropdown-item archive-space' data-id="{{ space.id }}">
+						<twig:ux:icon name='material-symbols-light:archive-outline-rounded'/>
+						<span>Archive</span>
+					</li>
+				{% endif %}
+				{% if space.status == 'archived' %}
+					<li class='dropdown-item restore-space' data-id="{{ space.id }}">
+						<twig:ux:icon name='mdi-light:refresh'/>
+						<span>Restore</span>
+					</li>
+				{% endif %}
+				<li class='dropdown-item'>
+					<form
+						action="{{ path('app_entity_delete', { class: space|class_name|lower, id: space.id }) }}"
+    				    method="POST"
+    				    onsubmit="return confirm('Do you really want to delete this item?');"
+					>
+						{# <input type="hidden" name="_method" value="DELETE"> #}
+    				    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ space.id) }}">
+    				    <button type="submit" class="dropdown-item-content text-danger border-0 bg-transparent p-0">
+    				        <twig:ux:icon name="material-symbols-light:delete-outline-rounded"/>
+    				        <span>Delete</span>
+    				    </button>
+    				</form>
+				</li>
+			</twig:block>
+		</twig:Dropdown>
+	</div>
+	<div class='collapse {% if has_show_class and children is not empty %}show{% endif %}' id="{{ 'collapse-space-' ~ space.id }}">
+		<ul class='sortable-list navbar-nav btn-toggle-nav' data-controller="sortable" data-sortable-url="{{ path('api_space_hierarchy') }}">
+			{% if space.accounts is not empty or space.budgets is not empty %}
+				<li class='nav-item'>
+					<div class='nav-summary'>
+						<a href="" class='collapse-summary nav-link'>
+							<twig:ux:icon name='material-symbols-light:euro-rounded'/>
+							<span>Accounting</span>
+						</a>
+					</div>
+				</li>
+			{% endif %}
+			
+			{% for child in children %}
+                {% include 'parts/space-item.html.twig' with { 'space': child, 'spaces': spaces } %}
+			{% endfor %}
+		</ul>
+	</div>
+</li>
+
+{% macro has_show_class(space, spaces) %}
+	{% set has_show_class = '0' %}
+
+	{% if app.request.get("_route") == "app_entity_show" and app.request.get("id") == space.id %}
+		{% set has_show_class = '1' %}
+	{% endif %}
+
+	{% set children = spaces|filter(s => s.parent is not null and s.parent.id == space.id) %}
+	{% if children is not empty and has_show_class == '0' %}
+		{% for child in children %}
+			{% if _self.has_show_class(child, spaces)|trim == '1' %}
+				{% set has_show_class = '1' %}
+			{% endif %}
+		{% endfor %}
+	{% endif %}
+
+	{{ has_show_class }}
+{% endmacro %}

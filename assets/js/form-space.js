@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbo:load', function () {
 	const openModalSpaceButtons = document.querySelectorAll('.open-modal-space');
 	openModalSpaceButtons.forEach((button) => {
 		button.onclick = () => {

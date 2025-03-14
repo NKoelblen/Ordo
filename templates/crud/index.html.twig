@@ -30,7 +30,17 @@
 						<td>
 							<a href="{{ path('app_entity_show', { class: item|class_name|lower, id: item.id }) }}">Show</a>
 							<a href="{{ path('app_entity_edit', { class: item|class_name|lower, id: item.id }) }}">Edit</a>
-							<a href="{{ path('app_entity_delete', { class: item|class_name|lower, id: item.id }) }}" onclick="return confirm('Do you really want to delete this item?');">Delete</a>
+							<form
+								action="{{ path('app_entity_delete', { class: item|class_name|lower, id: item.id }) }}"
+								method="POST"
+    						    onsubmit="return confirm('Do you really want to delete this item?');"
+							>
+								{# <input type="hidden" name="_method" value="DELETE"> #}
+    						    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
+    						    <button type="submit" class="text-danger border-0 bg-transparent">
+    						        Delete
+    						    </button>
+    						</form>
 						</td>
 					</tr>
 				{% endfor %}

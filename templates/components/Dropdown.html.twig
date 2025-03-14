@@ -1,0 +1,8 @@
+<div class='dropdown'>
+	<span id='{{ "dropdown-" ~ dropdownToggleId }}' class='dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='false'>
+		<twig:ux:icon name='{{ submenu is defined and submenu == true ? "mdi:caret-up" : "radix-icons:dots-horizontal" }}'/>
+	</span>
+	<ul class='dropdown-menu {% if submenu is defined and submenu == true %}dropdown-submenu{% endif %}' aria-labelledby='{{ "#dropdown-" ~ dropdownToggleId }}'>
+        {% block items %}{% endblock %}
+	</ul>
+</div>

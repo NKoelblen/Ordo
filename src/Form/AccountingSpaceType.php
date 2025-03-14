@@ -2,27 +2,31 @@
 
 namespace App\Form;
 
-use App\Entity\Account;
-use App\Form\Field\CustomMoneyFieldType;
-use App\Form\Field\SpacesFieldType;
+use App\Entity\Space;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AccountType extends AbstractType
+class AccountingSpaceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('spaces', SpacesFieldType::class)
+            ->add(child: 'accounting', options: [
+                'required' => false,
+                'label' => 'Add Accounting',
+                'attr' => [
+                    'class' => 'invisible space-accounting',
+                ]
+            ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Account::class,
+            'data_class' => Space::class,
+            'space_id' => null,
         ]);
     }
 }

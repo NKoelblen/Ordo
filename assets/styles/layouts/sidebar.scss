@@ -196,10 +196,12 @@
 						}
 
 						.dropdown-menu {
-							// Layout
-							position: fixed;
-							top: 0;
-							left: 0;
+							&:not(.dropdown-submenu) {
+								// Layout
+								position: fixed;
+								top: 0;
+								left: 0;
+							}
 							// Spacing
 							padding: 0;
 							// Effects
@@ -214,14 +216,60 @@
 								// Interactivity
 								cursor: pointer;
 
+								&-content {
+									// Layout
+									display: flex;
+									// Flexbox
+									align-items: center;
+									gap: 0.5rem;
+								}
+
+								&:has(.dropdown-submenu) {
+									// Spacing
+									padding-right: 0;
+
+									.dropdown {
+										// Spacing
+										margin-left: auto;
+
+										.dropdown-toggle {
+											// Spacing
+											padding: 0;
+											// Effects
+											transform: rotate(90deg);
+										}
+
+										.dropdown-submenu {
+											// Layout
+											display: none;
+											position: absolute;
+											left: 100%;
+											top: -9px;
+										}
+									}
+
+									&:hover > .dropdown > .dropdown-submenu {
+										// Layout
+										display: block;
+									}
+								}
+
 								&:first-child {
 									// Spacing
 									padding-top: 0.5rem;
+									// Border
+									border-radius: 0.375rem 0.375rem 0 0;
 								}
 								&:last-child {
 									// Spacing
 									padding-bottom: 0.5rem;
+									border-radius: 0 0 0.375rem 0.375rem;
 								}
+							}
+
+							.form-check:has(.space-accounting) {
+								// Spacing
+								padding-left: 0;
 							}
 						}
 					}

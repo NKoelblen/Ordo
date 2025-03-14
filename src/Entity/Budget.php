@@ -127,6 +127,11 @@ class Budget
         return $this->spaces;
     }
 
+    public function getSpaceIds(): array
+    {
+        return $this->spaces->map(fn(Space $space) => $space->getId())->toArray();
+    }
+
     public function addSpace(Space $space): static
     {
         if (!$this->spaces->contains($space)) {
@@ -163,6 +168,20 @@ class Budget
     public function setYear(int $year): static
     {
         $this->year = $year;
+
+        return $this;
+    }
+
+
+    public function getPeriod(): array
+    {
+        return ['month' => $this->month, 'year' => $this->year];
+    }
+
+    public function setPeriod(array $period): static
+    {
+        $this->month = $period['month'];
+        $this->year = $period['year'];
 
         return $this;
     }

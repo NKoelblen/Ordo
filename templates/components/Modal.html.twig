@@ -5,10 +5,12 @@
 				<h2 id="{{ 'modal-' ~ id ~ '-label' }}" class='modal-title'>{{ title }}</h2>
 				<button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
 			</div>
-			<div class='modal-body'> {% block body %}{% endblock %}
-				</div>
-				<div class='modal-footer'> {% block footer %}{% endblock %}
-					</div>
-				</div>
+			<div class='modal-body'>
+				{% block body %}{% endblock %}
+			</div>
+			<div class='modal-footer'>
+				{% block footer %}{% endblock %}
 			</div>
 		</div>
+	</div>
+</div>
