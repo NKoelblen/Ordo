@@ -104,10 +104,39 @@
 				<li class='nav-item'>
 					<div class='nav-summary'>
 						<a href="" class='collapse-summary nav-link'>
-							<twig:ux:icon name='material-symbols-light:euro-rounded'/>
-							<span>Accounting</span>
+							{% set icon = 'material-symbols-light:euro-rounded' %}
+							{% set text = 'Accounting' %}
+							{% if space.budgets is empty %}
+								{% set icon = 'material-symbols-light:account-balance-outline-rounded' %}
+								{% set text = 'Account' ~ (space.accounts|length > 1 ? 's' : '') %}
+							{% elseif space.accounts is empty %}
+								{% set icon = 'mdi-light:chart-pie' %}
+								{% set text = 'Budget' ~ (space.budgets|length > 1 ? 's' : '') %}
+							{% endif %}
+							<twig:ux:icon name="{{ icon }}" />
+							<span>{{ text }}</span>
 						</a>
 					</div>
+					{% if space.accounts is not empty and space.budgets is not empty %}
+						<ul class='navbar-nav btn-toggle-nav'>
+							<li class='nav-item'>
+								<div class="nav-summary">
+									<a href="" class="collapse-summary nav-link">
+										<twig:ux:icon name="material-symbols-light:account-balance-outline-rounded" />
+										<span>Account{{ space.accounts|length > 1 ? 's' : '' }}</span>
+									</a>
+								</div>
+							</li>
+							<li class='nav-item'>
+								<div class="nav-summary">
+									<a href="" class="collapse-summary nav-link">
+										<twig:ux:icon name="mdi-light:chart-pie" />
+										<span>Budget{{ space.budgets|length > 1 ? 's' : '' }}</span>
+									</a>
+								</div>
+							</li>
+						</ul>
+					{% endif %}
 				</li>
 			{% endif %}
 			

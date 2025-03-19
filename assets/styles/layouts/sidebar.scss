@@ -4,11 +4,9 @@
 	top: 0;
 	left: 0;
 	display: block;
-	overflow: hidden auto;
 	// Sizing
 	width: 248px;
 	height: 100vh;
-	max-height: 100vh;
 	// Spacing
 	padding: 0;
 	// Background
@@ -27,8 +25,6 @@
 
 	#site-title {
 		// Layout
-		position: sticky;
-		top: 0;
 		display: block;
 		// Sizing
 		width: 100%;
@@ -44,6 +40,15 @@
 	}
 
 	#site-nav {
+		// Layout
+		overflow: hidden auto;
+		// Sizing
+		max-height: calc(100vh - 6rem);
+
+		&::-webkit-scrollbar-track {
+			background: $gray-950;
+		}
+
 		> .navbar-nav {
 			svg {
 				// Sizing

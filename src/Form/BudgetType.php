@@ -7,7 +7,7 @@ use App\Form\Field\CategoryFieldType;
 use App\Form\Field\CustomMoneyFieldType;
 use App\Form\Field\MemberFieldType;
 use App\Form\Field\PeriodFieldType;
-use App\Form\Field\SpacesFieldType;
+use App\Form\Field\SpaceFieldType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,7 +21,7 @@ class BudgetType extends AbstractType
             ->add('period', PeriodFieldType::class, ['label' => false])
             ->add('category', CategoryFieldType::class)
             ->add('groupMember', MemberFieldType::class)
-            ->add('spaces', SpacesFieldType::class)
+            ->add('space', SpaceFieldType::class)
         ;
     }
 

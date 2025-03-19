@@ -28,7 +28,6 @@ class GlobalVariables extends AbstractExtension implements GlobalsInterface
             'renameSpaceForms' => $this->spaceService->createRenameSpaceForms(),
             'statusSpaceForm' => $this->spaceService->createStatusSpaceForm(),
             'professionalSpaceForms' => $this->spaceService->createProfessionalSpaceForms(),
-            'accountingSpaceForms' => $this->spaceService->createAccountingSpaceForms(),
             'accountForm' => $this->accountService->createAccountForm(),
             'budgetForm' => $this->budgetService->createBudgetForm()
         ];

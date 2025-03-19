@@ -16,7 +16,7 @@ document.addEventListener('turbo:load', function () {
 				menu.style.left = `${window.innerWidth - menuRect.width - 10}px`;
 			}
 			if (menuRect.bottom > window.innerHeight) {
-				menu.style.top = `${rect.top + scrollTop - menuRect.height}px`;
+				menu.style.top = `${rect.bottom + scrollTop - menuRect.height - 2}px`;
 			}
 		}
 

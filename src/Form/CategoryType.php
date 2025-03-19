@@ -18,8 +18,6 @@ class CategoryType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $currentCategory = $options['current_item'];
-
         $builder
             ->add('name')
             ->add('parent', EntityType::class, [

@@ -11,7 +11,7 @@ document.addEventListener('turbo:load', function () {
 	function openForm(mode, id = null) {
 		const formBudget = document.querySelector('#form-budget');
 		const modalTitle = document.querySelector('#modal-budget .modal-title');
-		const budgetSpacesFields = formBudget.querySelectorAll('#budget_spaces .form-check-input');
+		const budgetSpaceField = formBudget.querySelector('#budget_space');
 
 		const modalTitleContent = 'Budget';
 		if (mode === 'edit') {
@@ -25,22 +25,42 @@ document.addEventListener('turbo:load', function () {
 					formBudget.querySelector('#budget_period').value = data.period;
 					formBudget.querySelector('#budget_category').value = data.category;
 					formBudget.querySelector('#budget_groupMember').value = data.groupMember;
-					budgetSpacesFields.forEach((option) => {
-						if (data.spaces.includes(parseInt(option.value))) {
-							option.checked = true;
-						}
-					});
+					budgetSpaceField.value = data.space;
+					updateCategories(data.space);
 				});
 		} else if (mode === 'new') {
 			formBudget.action = formBudget.dataset.newAction;
 			formBudget.reset();
 
 			modalTitle.textContent = 'New ' + modalTitleContent;
-			budgetSpacesFields.forEach((option) => {
-				if (option.value == id) {
-					option.checked = true;
-				}
-			});
+			budgetSpaceField.value = id;
+			updateCategories(id);
 		}
+	}
+
+	function updateCategories(spaceId) {
+		const budgetCategoryField = document.querySelector('#budget_category');
+		budgetCategoryField.innerHTML = "<option value=''>Select category</option>";
+
+		if (!spaceId) return;
+
+		fetch(`/api/categories/space/${spaceId}`)
+			.then((response) => response.json())
+			.then((categories) => {
+				categories.forEach((cat) => {
+					const option = document.createElement('option');
+					option.value = cat.id;
+					option.textContent = cat.name;
+					budgetCategoryField.appendChild(option);
+				});
+			});
+	}
+
+	// Écouter les changements manuels sur #budget_space
+	const budgetSpaceField = document.querySelector('#budget_space');
+	if (budgetSpaceField) {
+		budgetSpaceField.addEventListener('change', function () {
+			updateCategories(this.value);
+		});
 	}
 });

@@ -44,12 +44,6 @@ class Space
     private Collection $accounts;
 
     /**
-     * @var Collection<int, Budget>
-     */
-    #[ORM\ManyToMany(targetEntity: Budget::class, mappedBy: 'spaces')]
-    private Collection $budgets;
-
-    /**
      * @var Collection<int, Category>
      */
     #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'spaces')]
@@ -83,19 +77,21 @@ class Space
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\Column(options: ['default' => 'false'])]
-    #[Displayable]
-    private bool $accounting = false;
+    /**
+     * @var Collection<int, Budget>
+     */
+    #[ORM\OneToMany(targetEntity: Budget::class, mappedBy: 'space')]
+    private Collection $budgets;
 
     public function __construct()
     {
         $this->children = new ArrayCollection();
         $this->accounts = new ArrayCollection();
-        $this->budgets = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->counterparties = new ArrayCollection();
         $this->transactions = new ArrayCollection();
         $this->members = new ArrayCollection();
+        $this->budgets = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -215,33 +211,6 @@ class Space
     {
         if ($this->accounts->removeElement($account)) {
             $account->removeSpace($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Budget>
-     */
-    public function getBudgets(): Collection
-    {
-        return $this->budgets;
-    }
-
-    public function addBudget(Budget $budget): static
-    {
-        if (!$this->budgets->contains($budget)) {
-            $this->budgets->add($budget);
-            $budget->addSpace($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBudget(Budget $budget): static
-    {
-        if ($this->budgets->removeElement($budget)) {
-            $budget->removeSpace($this);
         }
 
         return $this;
@@ -391,14 +360,32 @@ class Space
         return $this;
     }
 
-    public function hasAccounting(): bool
+    /**
+     * @return Collection<int, Budget>
+     */
+    public function getBudgets(): Collection
     {
-        return $this->accounting;
+        return $this->budgets;
     }
 
-    public function setAccounting(bool $accounting): static
+    public function addBudget(Budget $budget): static
     {
-        $this->accounting = $accounting;
+        if (!$this->budgets->contains($budget)) {
+            $this->budgets->add($budget);
+            $budget->setSpace($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBudget(Budget $budget): static
+    {
+        if ($this->budgets->removeElement($budget)) {
+            // set the owning side to null (unless already changed)
+            if ($budget->getSpace() === $this) {
+                $budget->setSpace(null);
+            }
+        }
 
         return $this;
     }

@@ -17,10 +17,13 @@ class CategoryFieldType extends AbstractType
     {
         $resolver->setDefaults([
             'class' => Category::class,
-            'choices' => $this->categoryRepository->getHierarchyChoices(),
+            'choices' => array_filter(
+                $this->categoryRepository->getHierarchyChoices(),
+                fn(Category $category) => $category->getSpaces()->isEmpty()
+            ),
             'choice_label' => function (Category $category) {
                 return str_repeat('—', $category->getLevel()) . ' ' . $category->getName();
-            },
+            }
         ]);
     }
     public function getParent(): string
