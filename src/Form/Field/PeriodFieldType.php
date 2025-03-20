@@ -14,7 +14,7 @@ class PeriodFieldType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // Définition des mois en français avec leur numéro
-        $formatter = new IntlDateFormatter('fr_FR', IntlDateFormatter::FULL, IntlDateFormatter::NONE, null, null, 'MMMM');
+        $formatter = new IntlDateFormatter('en_EN', IntlDateFormatter::FULL, IntlDateFormatter::NONE, null, null, 'MMMM');
         $months = [];
 
         for ($i = 1; $i <= 12; $i++) {
@@ -26,9 +26,9 @@ class PeriodFieldType extends AbstractType
 
         $builder
             ->add('month', ChoiceType::class, [
-                'label' => 'Mois',
+                'label' => 'Month',
                 'choices' => $months,
-                'placeholder' => 'Sélectionnez un mois',
+                'placeholder' => 'Select a month',
             ])
             ->add('year')
         ;

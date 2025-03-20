@@ -20,18 +20,12 @@ class Budget
 
     #[ORM\ManyToOne(inversedBy: 'budgets')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Displayable]
     private ?Category $category = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     #[Displayable]
     private ?string $amount = null;
-
-    /**
-     * @var Collection<int, Space>
-     */
-    #[ORM\ManyToMany(targetEntity: Space::class, inversedBy: 'budgets')]
-    #[Displayable]
-    private Collection $spaces;
 
     #[ORM\Column]
     #[Displayable]
@@ -70,9 +64,13 @@ class Budget
     #[ORM\OneToMany(targetEntity: BudgetException::class, mappedBy: 'budget')]
     private Collection $budgetExceptions;
 
+    #[ORM\ManyToOne(inversedBy: 'budgets')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Displayable]
+    private ?Space $space = null;
+
     public function __construct()
     {
-        $this->spaces = new ArrayCollection();
         $this->budgetExceptions = new ArrayCollection();
     }
 
@@ -119,29 +117,6 @@ class Budget
         return $this;
     }
 
-    /**
-     * @return Collection<int, Space>
-     */
-    public function getSpaces(): Collection
-    {
-        return $this->spaces;
-    }
-
-    public function addSpace(Space $space): static
-    {
-        if (!$this->spaces->contains($space)) {
-            $this->spaces->add($space);
-        }
-
-        return $this;
-    }
-
-    public function removeSpace(Space $space): static
-    {
-        $this->spaces->removeElement($space);
-
-        return $this;
-    }
 
     public function getMonth(): ?int
     {
@@ -163,6 +138,20 @@ class Budget
     public function setYear(int $year): static
     {
         $this->year = $year;
+
+        return $this;
+    }
+
+
+    public function getPeriod(): array
+    {
+        return ['month' => $this->month, 'year' => $this->year];
+    }
+
+    public function setPeriod(array $period): static
+    {
+        $this->month = $period['month'];
+        $this->year = $period['year'];
 
         return $this;
     }
@@ -265,6 +254,18 @@ class Budget
                 $budgetException->setBudget(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSpace(): ?Space
+    {
+        return $this->space;
+    }
+
+    public function setSpace(?Space $space): static
+    {
+        $this->space = $space;
 
         return $this;
     }

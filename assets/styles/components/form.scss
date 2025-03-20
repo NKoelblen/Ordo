@@ -5,6 +5,11 @@ form {
 	flex-direction: column;
 	gap: 1rem;
 
+	fieldset {
+		// Spacing
+		padding: 0;
+	}
+
 	.form-row {
 		// Layout
 		display: flex;

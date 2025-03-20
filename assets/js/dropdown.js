@@ -8,15 +8,15 @@ document.addEventListener('turbo:load', function () {
 			const rect = toggle.getBoundingClientRect();
 			const scrollTop = document.documentElement.scrollTop;
 			const scrollLeft = document.documentElement.scrollLeft;
-			menu.style.top = `${rect.bottom + scrollTop}px`;
-			menu.style.left = `${rect.left + scrollLeft}px`;
+			menu.style.top = `${rect.top + scrollTop - 4}px`;
+			menu.style.left = `${rect.right + scrollLeft + 2}px`;
 
 			const menuRect = menu.getBoundingClientRect();
 			if (menuRect.right > window.innerWidth) {
 				menu.style.left = `${window.innerWidth - menuRect.width - 10}px`;
 			}
 			if (menuRect.bottom > window.innerHeight) {
-				menu.style.top = `${rect.top + scrollTop - menuRect.height}px`;
+				menu.style.top = `${rect.bottom + scrollTop - menuRect.height - 2}px`;
 			}
 		}
 

@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbo:load', function () {
 	const formSpaceStatus = document.querySelector('#form-space-status');
 	const spaceStatusField = formSpaceStatus.querySelector('#status_space_status');
 

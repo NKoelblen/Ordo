@@ -1,0 +1,118 @@
+<aside id='site-sidebar' class='navbar'>
+	<a href='/' id='site-title' class='navbar-brand'>Ordo</a>
+
+	<nav id='site-nav'>
+		<ul class='navbar-nav'>
+			<li class='nav-item'>
+				<div class='nav-summary {% if app.request.get("_route") == "app_home" %}active{% endif %}'>
+					<a href='/' class='nav-link collapse-summary'>Home</a>
+				</div>
+			</li>
+
+			<li class='nav-item' data-controller="sortable" data-sortable-url="{{ path('api_space_hierarchy') }}">
+				<div class='nav-title nav-summary'>
+					<div class='collapse-summary'>Spaces</div>
+                    <twig:Dropdown dropdownToggleId="space-root">
+						<twig:block name='items'>
+							<li class='open-modal-space dropdown-item' data-bs-toggle='modal' data-bs-target='#modal-space' data-mode='new'>
+								<twig:ux:icon name='material-symbols-light:workspaces-outline'/>
+								<span>Add Space</span>
+							</li>
+							<li id="show-archived-spaces" class='open-modal-space dropdown-item'>
+								<twig:ux:icon name='material-symbols-light:archive-outline-rounded'/>
+								<span>Show archived Spaces</span>
+							</li>
+							<li class='dropdown-item'>
+								<twig:ux:icon name='material-symbols-light:settings-outline-rounded'/>
+								<span>Settings</span>
+							</li>
+						</twig:block>
+					</twig:Dropdown>
+				</div>
+				<ul id="space-list" class='sortable-list btn-toggle-nav navbar-nav root-items'>
+					{% for space in spaces %}
+						{% if space.parent is null %}
+                            {% include 'parts/space-item.html.twig' with { 'space': space, 'spaces': spaces } %}
+						{% endif %}
+					{% endfor %}
+				</ul>
+			</li>
+		</ul>
+	</nav>
+</aside>
+
+<twig:Modal id='space' title='New Space'>
+	<twig:block name='body'>
+		{{ form_start(
+			spaceForm,
+			{
+				'attr': {
+					'id': 'form-space',
+					'data-new-action': path('app_entity_new', {'class': 'space'}),
+					'data-edit-action': path('app_entity_edit', {'class': 'space', 'id': 'PLACEHOLDER'})
+				}
+			}
+		) }}
+		{{ form_widget(spaceForm) }}
+		{{ form_end(spaceForm) }}
+	</twig:block>
+
+	<twig:block name='footer'>
+		<button type='submit' form='form-space' id='submit-form-space' class='btn btn-primary'>Save</button>
+	</twig:block>
+</twig:Modal>
+
+<twig:Modal id='account' title='New Account'>
+	<twig:block name='body'>
+		{{ form_start(
+			accountForm,
+			{
+				'attr': {
+					'id': 'form-account',
+					'data-new-action': path('app_entity_new', {'class': 'account'}),
+					'data-edit-action': path('app_entity_edit', {'class': 'account', 'id': 'PLACEHOLDER'})
+				}
+			}
+		) }}
+		{{ form_widget(accountForm) }}
+		{{ form_end(accountForm) }}
+	</twig:block>
+
+	<twig:block name='footer'>
+		<button type='submit' form='form-account' id='submit-form-account' class='btn btn-primary'>Save</button>
+	</twig:block>
+</twig:Modal>
+
+<twig:Modal id='budget' title='New Budget'>
+	<twig:block name='body'>
+		{{ form_start(
+			budgetForm,
+			{
+				'attr': {
+					'id': 'form-budget',
+					'data-new-action': path('app_entity_new', {'class': 'budget'}),
+					'data-edit-action': path('app_entity_edit', {'class': 'budget', 'id': 'PLACEHOLDER'}),
+					'data-turbo': 'false'
+				}
+			}
+		) }}
+		{{ form_widget(budgetForm) }}
+		{{ form_end(budgetForm) }}
+	</twig:block>
+
+	<twig:block name='footer'>
+		<button type='submit' form='form-budget' id='submit-form-budget' class='btn btn-primary'>Save</button>
+	</twig:block>
+</twig:Modal>
+
+{{ form_start(
+	statusSpaceForm, 
+	{
+		'attr': {
+			'id': 'form-space-status',
+			'class': 'd-none',
+			'data-action': path('app_space_status', {'id': 'PLACEHOLDER'})}
+	}
+)}}
+{{ form_widget(statusSpaceForm) }}
+{{ form_end(statusSpaceForm) }}

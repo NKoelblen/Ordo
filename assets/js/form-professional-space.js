@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbo:load', function () {
 	const formSpaceProfessional = document.querySelectorAll('.form-space-professional');
 
 	formSpaceProfessional.forEach((form) => {

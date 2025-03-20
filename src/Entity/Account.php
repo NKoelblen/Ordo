@@ -6,7 +6,6 @@ use App\Attribute\Displayable;
 use App\Repository\AccountRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
@@ -21,10 +20,6 @@ class Account
     #[ORM\Column(length: 255)]
     #[Displayable]
     private ?string $name = null;
-
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    #[Displayable]
-    private ?string $balance = null;
 
     /**
      * @var Collection<int, Transaction>
@@ -82,18 +77,6 @@ class Account
         return $this;
     }
 
-    public function getBalance(): ?string
-    {
-        return $this->balance;
-    }
-
-    public function setBalance(?string $balance): static
-    {
-        $this->balance = $balance;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Transaction>
      */
@@ -130,6 +113,11 @@ class Account
     public function getSpaces(): Collection
     {
         return $this->spaces;
+    }
+
+    public function getSpaceIds(): array
+    {
+        return $this->spaces->map(fn(Space $space) => $space->getId())->toArray();
     }
 
     public function addSpace(Space $space): static

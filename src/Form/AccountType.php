@@ -15,7 +15,6 @@ class AccountType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('balance', CustomMoneyFieldType::class)
             ->add('spaces', SpacesFieldType::class)
         ;
     }

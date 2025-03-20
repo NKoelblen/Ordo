@@ -7,7 +7,7 @@
 {% block content %}
 	{{ include('crud/_form.html.twig', { form: form }) }}
 
-	<a href="{{ path('app_entity_index', { class: item|class_name|lower }) }}">Back to liste</a>
+	<a href="{{ path('app_entity_index', { class: item|class_name|lower }) }}">Back to list</a>
 
 	<a href="{{ path('app_entity_delete', { class: item|class_name|lower, id: item.id }) }}" onclick="return confirm('Do you really want to delete this item?');">Delete</a>
 {% endblock %}

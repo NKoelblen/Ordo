@@ -16,6 +16,24 @@ class SpaceRepository extends ServiceEntityRepository
         parent::__construct($registry, Space::class);
     }
 
+    public function getAncestorsIds(int $spaceId): array
+    {
+        $entityManager = $this->getEntityManager();
+        $connection = $entityManager->getConnection();
+
+        $sql = "WITH RECURSIVE space_hierarchy AS (
+                SELECT id, parent_id FROM space WHERE id = :spaceId
+                UNION ALL
+                SELECT s.id, s.parent_id FROM space s
+                INNER JOIN space_hierarchy sh ON s.id = sh.parent_id
+            )
+            SELECT id FROM space_hierarchy";
+
+        $stmt = $connection->executeQuery($sql, ['spaceId' => $spaceId]);
+
+        return array_column($stmt->fetchAllAssociative(), 'id');
+    }
+
     public function getHierarchy(?Space $parent = null): array
     {
         $qb = $this->createQueryBuilder('s')

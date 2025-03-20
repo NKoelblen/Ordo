@@ -74,6 +74,16 @@ class CategoryRepository extends ServiceEntityRepository
         }
     }
 
+    public function getCategoriesBySpaces(array $spaceIds)
+    {
+        return $this->createQueryBuilder('c')
+            ->innerJoin('c.spaces', 's')
+            ->where('s.id IN (:spaceIds)')
+            ->setParameter('spaceIds', $spaceIds)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Category[] Returns an array of Category objects
     //     */

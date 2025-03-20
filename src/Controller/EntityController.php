@@ -135,7 +135,7 @@ final class EntityController extends AbstractController
         );
     }
 
-    #[Route('/{class}/{id}/delete', name: 'app_entity_delete', methods: ['GET'])]
+    #[Route('/{class}/{id}/delete', name: 'app_entity_delete', methods: ['POST', 'GET'])]
     public function delete(string $class, int $id, EntityManagerInterface $entityManager, Request $request): RedirectResponse
     {
         $entityClass = "App\\Entity\\" . ucfirst($class);
@@ -157,14 +157,7 @@ final class EntityController extends AbstractController
             if ($referer) {
                 $path = parse_url($referer, PHP_URL_PATH);
 
-                $entityExists = false;
-                $routeParams = $this->router->match($path);
-                if (isset($routeParams['id']) && isset($routeParams['class'])) {
-                    $entity = $entityManager->getRepository($entityClass)->find($routeParams['id']);
-                    $entityExists = $entity !== null ? true : false;
-                }
-
-                if ($entityExists) {
+                if ($entityManager->getRepository($entityClass)->find(explode('/', $path)[2])) {
                     return $this->redirect($referer);
                 } else {
                     return $this->redirectToRoute('app_home');
