@@ -19,24 +19,24 @@ final class BudgetController extends AbstractController
     ) {
     }
 
-    #[Route('/budget/{id}/rename', name: 'app_budget_rename', methods: ['POST'])]
-    public function rename(int $id, Request $request, EntityManagerInterface $entityManager, FormFactoryInterface $formFactory): ?Response
-    {
-        $budget = $this->budgetRepository->find($id);
-        if (!$budget) {
-            throw $this->createNotFoundException("Aucun enregistrement trouvé.");
-        }
-        $form = $formFactory->create(RenameBudgetType::class, $budget);
+    // #[Route('/budget/{id}/rename', name: 'app_budget_rename', methods: ['POST'])]
+    // public function rename(int $id, Request $request, EntityManagerInterface $entityManager, FormFactoryInterface $formFactory): ?Response
+    // {
+    //     $budget = $this->budgetRepository->find($id);
+    //     if (!$budget) {
+    //         throw $this->createNotFoundException("Aucun enregistrement trouvé.");
+    //     }
+    //     $form = $formFactory->create(RenameBudgetType::class, $budget);
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+    //     $form->handleRequest($request);
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $entityManager->flush();
 
-            return $this->redirect($request->headers->get('referer'));
-        }
+    //         return $this->redirect($request->headers->get('referer'));
+    //     }
 
-        return $this->redirect($request->headers->get('referer'));
-    }
+    //     return $this->redirect($request->headers->get('referer'));
+    // }
 
     #[Route('/api/budget/{id}', name: 'api_budget_get', methods: ['GET'])]
     public function getBudget(int $id): JsonResponse

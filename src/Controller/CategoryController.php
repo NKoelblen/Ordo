@@ -16,8 +16,8 @@ final class CategoryController extends AbstractController
     #[Route('/api/categories/space/{spaceId}', name: 'api_categories_by_space', methods: ['GET'])]
     public function getCategoriesBySpace(CategoryRepository $categoryRepository, int $spaceId): JsonResponse
     {
-        $spaceIds = $this->spaceRepository->findAncestors($spaceId);
-        $categories = $categoryRepository->findCategoriesBySpaces($spaceIds);
+        $spaceIds = $this->spaceRepository->getAncestorsIds($spaceId);
+        $categories = $categoryRepository->getCategoriesBySpaces($spaceIds);
 
         return $this->json(array_map(fn($category) => [
             'id' => $category->getId(),

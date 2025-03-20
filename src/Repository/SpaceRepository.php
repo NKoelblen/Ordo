@@ -16,7 +16,7 @@ class SpaceRepository extends ServiceEntityRepository
         parent::__construct($registry, Space::class);
     }
 
-    public function findAncestors(int $spaceId): array
+    public function getAncestorsIds(int $spaceId): array
     {
         $entityManager = $this->getEntityManager();
         $connection = $entityManager->getConnection();
@@ -29,12 +29,11 @@ class SpaceRepository extends ServiceEntityRepository
             )
             SELECT id FROM space_hierarchy";
 
-        $stmt = $connection->prepare($sql);
-        $stmt->execute(['spaceId' => $spaceId]);
+        $stmt = $connection->executeQuery($sql, ['spaceId' => $spaceId]);
 
         return array_column($stmt->fetchAllAssociative(), 'id');
     }
-    
+
     public function getHierarchy(?Space $parent = null): array
     {
         $qb = $this->createQueryBuilder('s')

@@ -19,24 +19,24 @@ final class AccountController extends AbstractController
     ) {
     }
 
-    #[Route('/account/{id}/rename', name: 'app_account_rename', methods: ['POST'])]
-    public function rename(int $id, Request $request, EntityManagerInterface $entityManager, FormFactoryInterface $formFactory): ?Response
-    {
-        $account = $this->accountRepository->find($id);
-        if (!$account) {
-            throw $this->createNotFoundException("Aucun enregistrement trouvé.");
-        }
-        $form = $formFactory->create(RenameAccountType::class, $account);
+    // #[Route('/account/{id}/rename', name: 'app_account_rename', methods: ['POST'])]
+    // public function rename(int $id, Request $request, EntityManagerInterface $entityManager, FormFactoryInterface $formFactory): ?Response
+    // {
+    //     $account = $this->accountRepository->find($id);
+    //     if (!$account) {
+    //         throw $this->createNotFoundException("Aucun enregistrement trouvé.");
+    //     }
+    //     $form = $formFactory->create(RenameAccountType::class, $account);
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+    //     $form->handleRequest($request);
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $entityManager->flush();
 
-            return $this->redirect($request->headers->get('referer'));
-        }
+    //         return $this->redirect($request->headers->get('referer'));
+    //     }
 
-        return $this->redirect($request->headers->get('referer'));
-    }
+    //     return $this->redirect($request->headers->get('referer'));
+    // }
 
     #[Route('/api/account/{id}', name: 'api_account_get', methods: ['GET'])]
     public function getAccount(int $id): JsonResponse
